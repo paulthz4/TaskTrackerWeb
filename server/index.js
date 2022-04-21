@@ -1,46 +1,25 @@
 const express  = require('express')
 const app = express()
-const {MongoClient} = require('mongodb')
+const {MongoClient, Collection} = require('mongodb')
 
 const uri = "mongodb+srv://newUser2:superSafe2@cluster0.uo7qm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 
-const client = new MongoClient(uri)
-let tasks = [];
-async function run(){
-  try{
-    await client.connect()
-    
-    const db = client.db("case_tracker")
-    //console.log("connected successfully to server")
-    const collection = db.collection("test_cases")
-    const query = { taskName: "api testing" }
-    
-    const options = {
-      sort:{projection: {_id:0, taskName: 1}}
-    }
-    
-    const task = collection.find({})
-    await task.forEach(doc => {
-      tasks.push(doc)
-      console.log(doc)
-    })
-    console.log(task)
-  }
-  finally{
-    await client.close()
-  }
-}
-run().catch(console.dir)
-
-app.get('/', (req,res)=>{
-  run()
-  let str = "";
-  for(let i=0; i<tasks.length; i++){
-    str += +"\n"
-  }
-  res.send('hello world\n' + str)
+let collection
+// connecting to mongodb using MongoClient.connect static method
+MongoClient.connect(uri, (err, database) => {
+  if (err) return console.log(err)
+  
+  collection = database.db('case_tracker').collection("test_cases")
+  app.listen(process.env.PORT || 3002, () => {
+  console.log('listening on 3002')
+  })
 })
 
-app.listen(3002, () =>{
-  console.log("running on port 3002")
+app.get('/', (req,res)=>{
+  collection.find({}).toArray((err,result)=>{
+    if(err) return console.log(err)
+    console.log(result)
+    res.send(result)  
+  })
+  
 })
