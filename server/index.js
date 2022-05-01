@@ -11,7 +11,7 @@ let collection;
 MongoClient.connect(uri, (err, database) => {
   if (err) 
     return console.log(err)
-  collection = database.db('case_tracker').collection("cases")
+  collection = database.db('all_tasks').collection("tasks")
   app.listen( 3002, () => {
   console.log('listening on 3002')
   });
@@ -23,13 +23,28 @@ app.get('/', (req,res)=>{
       console.log(err);
     // console.log(result);
     res.status(200).json(result);
+    return;
   });
   
   app.get('/tasks',(req,res)=>{
-    collection.find({"taskName": req.query.taskName.trim()}).sort({"date created": -1}).project({_id: 0})
-    .toArray((err,result)=>{
-      res.status(200).json(result);
-    })
+    let direction;
+    if(!req.query.direction || req.query.direction === 'asc')
+      direction = 1;
+    else if(req.query.direction ==='desc')
+      direction = -1;
+    
+    if(req.query.taskName)
+      collection.find({"taskName": req.query.taskName}).sort({"date created": direction}).project({_id: 0}).toArray((err,result)=>{
+        res.status(200).json(result);
+        console.log(req.query.taskName)
+        return;
+      });
+    
+    if(!req.query.taskName)
+      collection.find({}).sort({"date created": direction}).project({_id: 0}).toArray((err,result)=>{
+        res.status(200).json(result);
+        return;
+      });
   });
  
 });
