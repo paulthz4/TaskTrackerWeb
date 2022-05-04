@@ -11,7 +11,7 @@ let collection;
 MongoClient.connect(uri, (err, database) => {
   if (err) 
     return console.log(err)
-  collection = database.db('all_tasks').collection("tasks")
+  collection = database.db('all_tasks').collection("test_tasks")
   app.listen( 3002, () => {
   console.log('listening on 3002')
   });
@@ -34,14 +34,19 @@ app.get('/', (req,res)=>{
       direction = -1;
     
     if(req.query.taskName)
-      collection.find({"taskName": req.query.taskName}).sort({"date created": direction}).project({_id: 0}).toArray((err,result)=>{
+      collection.find({"task_name": req.query.taskName}).sort({"date_created": direction}).project({_id: 0}).toArray((err,result)=>{
         res.status(200).json(result);
         console.log(req.query.taskName)
         return;
       });
     
     if(!req.query.taskName)
-      collection.find({}).sort({"date created": direction}).project({_id: 0}).toArray((err,result)=>{
+      collection.find({}).sort({"date_created": direction}).project({_id: 0}).toArray((err,result)=>{
+      if(direction == -1){
+        res.status(200).json(result.sort((a,b) => parseInt(b.time_created) - parseInt(a.time_created)));
+        console.log(result);
+        return; 
+      }
         res.status(200).json(result);
         return;
       });
