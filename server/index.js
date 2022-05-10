@@ -17,7 +17,7 @@ MongoClient.connect(uri, (err, database) => {
   });
 });
 
-app.get('/', (req,res)=>{
+app.get('/', async (req,res)=>{
   collection.find().sort({"date created":-1}).project({_id: 0}).toArray((err,result)=>{
     if(err)
       console.log(err);
@@ -26,19 +26,24 @@ app.get('/', (req,res)=>{
     return;
   });
   
-  app.get('/tasks',(req,res)=>{
+  app.get('/tasks', async (req,res)=>{
     let direction;
     if(!req.query.direction || req.query.direction === 'asc')
       direction = 1;
     else if(req.query.direction ==='desc')
       direction = -1;
     
-    if(req.query.taskName)
-      collection.find({"task_name": req.query.taskName}).sort({"date_created": direction}).project({_id: 0}).toArray((err,result)=>{
-        res.status(200).json(result);
-        console.log(req.query.taskName)
-        return;
-      });
+    let cursor;
+    let count = "wtf";
+    if(req.query.taskName){
+      cursor = collection.find({"task_name": req.query.taskName}).sort({"date_created": direction}).project({_id: 0});
+      // for await (const doc of cursor){
+      //   count += doc.total_time;
+      //   console.log(doc)
+      // }
+       res.status(200).json(await cursor.toArray());
+      return;
+    }  
     
     if(!req.query.taskName)
       collection.find({}).sort({"date_created": direction}).project({_id: 0}).toArray((err,result)=>{
