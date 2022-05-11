@@ -58,7 +58,7 @@ export function TodoItemsPage() {
           </List>
         </div>
       )}
-      <MoreInfo />
+      {/* <MoreInfo /> */}
     </Container>
   );
 }

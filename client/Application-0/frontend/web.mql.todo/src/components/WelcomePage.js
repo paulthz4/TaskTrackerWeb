@@ -116,7 +116,7 @@ export function WelcomePage() {
           </button>
         </form>
       </Card>
-      <MoreInfoTemplateAndDocs />
+      {/* <MoreInfoTemplateAndDocs /> */}
     </Container>
   );
 }
