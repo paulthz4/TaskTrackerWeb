@@ -5,7 +5,9 @@ import {
   Typography,
   List,
   LinearProgress,
+  Divider,
 } from "@material-ui/core";
+import './App.css';
 import AddIcon from "@material-ui/icons/Add";
 import { useTodos } from "../hooks/useTodos";
 import { TodoItem } from "./TodoItem";
@@ -13,9 +15,12 @@ import { useDraftTodos } from "../hooks/useDraftTodos";
 import { DraftTodoItem } from "./DraftTodoItem";
 import { useShowLoader } from "../hooks/util-hooks";
 import { MoreInfo } from "./MoreInfo";
+import TaskItem from "./TaskItem";
+import useTasks from "../hooks/useTask_mql";
 
 export function TodoItemsPage() {
   const { loading, todos, ...todoActions } = useTodos();
+  const { tasks}  = useTasks();
   const { draftTodos, ...draftTodoActions } = useDraftTodos();
   const showLoader = useShowLoader(loading, 200);
   return (
@@ -39,7 +44,13 @@ export function TodoItemsPage() {
           >
             Add To-Do
           </Button>
-          <List style={{ width: "100%" }}>
+          <List style={{ width: "100%" }} dense={true}>
+            {tasks.map((task) =>(
+              <TaskItem  key={String(task._id)}
+                task={task}
+              />
+            ))}
+            <br/><Divider/><br/><br/>
             {todos.map((todo) => (
               <TodoItem
                 key={String(todo._id)}

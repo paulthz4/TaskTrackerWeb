@@ -56,3 +56,8 @@
   flex-direction: column;
   gap: 24px;
 }
+
+.card {
+  margin: auto;
+  padding: 12em 5em;
+}
