@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {
   Container,
   Button,
@@ -16,13 +16,24 @@ import { DraftTodoItem } from "./DraftTodoItem";
 import { useShowLoader } from "../hooks/util-hooks";
 import { MoreInfo } from "./MoreInfo";
 import TaskItem from "./TaskItem";
-import useTasks from "../hooks/useTask_mql";
+import {useTasks} from "../hooks/useTasks_Node";
+import axios from "axios";
 
 export function TodoItemsPage() {
   const { loading, todos, ...todoActions } = useTodos();
-  const { tasks}  = useTasks();
+  // const { tasks }  = useTasks();
   const { draftTodos, ...draftTodoActions } = useDraftTodos();
   const showLoader = useShowLoader(loading, 200);
+  
+  const [tasks, setTasks] = useState([]);
+  
+  useEffect(()=>{
+     axios.get('http://localhost:3002/').then(response => {
+      setTasks(response.data.tasks);
+       console.log(response);
+     });
+    console.log(tasks);
+  },[]);
   return (
     <Container className="main-container" maxWidth="sm">
       {loading ? (
@@ -45,11 +56,11 @@ export function TodoItemsPage() {
             Add To-Do
           </Button>
           <List style={{ width: "100%" }} dense={true}>
-            {tasks.map((task) =>(
-              <TaskItem  key={String(task._id)}
-                task={task}
-              />
-            ))}
+            {tasks && 
+                tasks.map((task) =>(
+                <TaskItem key={task._id} task={task} />
+              ))
+            }
             <br/><Divider/><br/><br/>
             {todos.map((todo) => (
               <TodoItem
