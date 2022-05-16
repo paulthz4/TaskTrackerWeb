@@ -1,8 +1,11 @@
 const express  = require('express');
 const app = express();
+const cors  = require('cors');
+
 const {MongoClient} = require('mongodb');
 
 app.set('json spaces', 1);
+app.use(cors());
 
 const uri = "mongodb+srv://newUser2:superSafe2@cluster0.uo7qm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
@@ -22,7 +25,7 @@ app.get('/', async (req,res)=>{
     if(err)
       console.log(err);
     // console.log(result);
-    res.status(200).json(result);
+    res.status(200).json({"tasks": result});
     return;
   });
   
