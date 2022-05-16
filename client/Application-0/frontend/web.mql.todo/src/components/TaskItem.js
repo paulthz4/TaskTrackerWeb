@@ -1,29 +1,37 @@
 import React from 'react';
-import {Divider, ListItem, ListItemIcon, ListItemText, Typography} from "@material-ui/core";
+import {Divider, ListItem, Box, ListItemIcon, ListItemText, Typography} from "@material-ui/core";
+import { red } from '@material-ui/core/colors';
 
 export default function Task({task}){
   
   return(
-    <>
-      <ListItem sx={{display: 'flex', alignItems:'space-around', flexDirection: 'column'}}>
-        <Typography>Task Name:{task.summary}</Typography>
+    <Box sx={{
+      bgcolor: red,
+      boxShadow: 1,
+      borderRadius: 2,
+      backgroundColor: 'aliceblue',
+      p: 2,
+      minWidth: 300,
+    }}>
+      <ListItem >
+        <Typography><span style={{color: '#ffa615'}}>Task Name:</span> {task.task_name}</Typography>
       </ListItem>
       <ListItem>
-        <Typography>Date Created:{task.date_created}</Typography>
+        <Typography><span style={{color: '#ffa615'}}>Date Created:</span> {task.date_created}</Typography>
       </ListItem>
       <ListItem>
-        <Typography>Time created:{task.time_created}</Typography>
+        <Typography><span style={{color: '#ffa615'}}>Time created:</span> {task.time_created}</Typography>
       </ListItem>
       <ListItem>
-        <Typography>Total Time:{task.total_time} </Typography>
+        <Typography><span style={{color: '#ffa615'}}>Total Time:</span> {task.total_time} </Typography>
       </ListItem>
       <ListItem>
-        <Typography>toppages:{task.stoppages} </Typography>
+        <Typography><span style={{color: '#ffa615'}}> toppages:</span> {task.stoppages} </Typography>
       </ListItem>
       <ListItem>
-        <Typography>stoppage times:{task.stoppage_times}</Typography>
+        <Typography><span style={{color: '#ffa615'}}>stoppage times:</span> {task.stoppage_times}</Typography>
       </ListItem>
       <Divider/>
-    </>
+    </Box>
   );
 }

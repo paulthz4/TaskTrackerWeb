@@ -11,10 +11,10 @@ import { dataSourceName } from "../realm.json";
 //   getTodoIndex,
 // } from "../utils";
 
-export default function useTasks(){
+export function useTasks(){
   const realmApp = useRealmApp();
   const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   
   const taskCollection = useCollection({
     cluster: 'mongodb-atlas',
@@ -25,7 +25,7 @@ export default function useTasks(){
   useEffect(()=>{
     taskCollection.find({}).then((fetchedTasks) => {
       setTasks(fetchedTasks);
-      setLoading(false);
+      // setLoading(false);
     });
   },[taskCollection]);
   
