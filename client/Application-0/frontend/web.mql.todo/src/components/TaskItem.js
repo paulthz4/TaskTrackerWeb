@@ -6,32 +6,31 @@ export default function Task({task}){
   
   return(
     <Box sx={{
-      bgcolor: red,
-      boxShadow: 1,
-      borderRadius: 2,
-      backgroundColor: 'aliceblue',
+      my: 2,
       p: 2,
+      boxShadow: 3,
+      borderRadius: 18,
+      backgroundColor: '#e6f4ff',
       minWidth: 300,
     }}>
       <ListItem >
-        <Typography><span style={{color: '#ffa615'}}>Task Name:</span> {task.task_name}</Typography>
+        <Typography><span style={{color: '#FFCA3C'}}>Task Name:</span> {task.task_name}</Typography>
       </ListItem>
       <ListItem>
-        <Typography><span style={{color: '#ffa615'}}>Date Created:</span> {task.date_created}</Typography>
+        <Typography><span style={{color: '#FFCA3C'}}>Date Created:</span> {task.date_created}</Typography>
       </ListItem>
       <ListItem>
-        <Typography><span style={{color: '#ffa615'}}>Time created:</span> {task.time_created}</Typography>
+        <Typography><span style={{color: '#FFCA3C'}}>Time created:</span> {task.time_created}</Typography>
       </ListItem>
       <ListItem>
-        <Typography><span style={{color: '#ffa615'}}>Total Time:</span> {task.total_time} </Typography>
+        <Typography><span style={{color: '#FFCA3C'}}>Total Time:</span> {task.total_time} </Typography>
       </ListItem>
       <ListItem>
-        <Typography><span style={{color: '#ffa615'}}> toppages:</span> {task.stoppages} </Typography>
+        <Typography><span style={{color: '#FFCA3C'}}> toppages:</span> {task.stoppages} </Typography>
       </ListItem>
       <ListItem>
-        <Typography><span style={{color: '#ffa615'}}>stoppage times:</span> {task.stoppage_times}</Typography>
+        <Typography><span style={{color: '#FFCA3C'}}>stoppage times:</span> {task.stoppage_times}</Typography>
       </ListItem>
-      <Divider/>
     </Box>
   );
 }
