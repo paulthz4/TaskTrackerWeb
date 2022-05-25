@@ -1,20 +1,19 @@
 import React from 'react';
-import {Divider, ListItem, Box, ListItemIcon, ListItemText, Typography} from "@material-ui/core";
-import { red } from '@material-ui/core/colors';
+import {ListItem, Box,  Typography} from "@mui/material";
 
 export default function Task({task}){
   
   return(
     <Box sx={{
-      my: 2,
-      p: 2,
-      boxShadow: 3,
-      borderRadius: 18,
+      boxShadow: 2,
+      my: 5,
+      p: 3,
+      borderRadius: 3,
       backgroundColor: '#e6f4ff',
       minWidth: 300,
     }}>
       <ListItem >
-        <Typography><span style={{color: '#FFCA3C'}}>Task Name:</span> {task.task_name}</Typography>
+        <Typography variant='h6'>{task.task_name}</Typography>
       </ListItem>
       <ListItem>
         <Typography><span style={{color: '#FFCA3C'}}>Date Created:</span> {task.date_created}</Typography>
@@ -29,7 +28,7 @@ export default function Task({task}){
         <Typography><span style={{color: '#FFCA3C'}}> toppages:</span> {task.stoppages} </Typography>
       </ListItem>
       <ListItem>
-        <Typography><span style={{color: '#FFCA3C'}}>stoppage times:</span> {task.stoppage_times}</Typography>
+        <Typography><span style={{color: '#FFCA3C'}}>stoppage times:</span> {task.stoppage_times.map(time => <li key={time}>{time}</li>)}</Typography>
       </ListItem>
     </Box>
   );

@@ -37,7 +37,6 @@ app.get('/', async (req,res)=>{
       direction = -1;
     
     let cursor;
-    let count = "wtf";
     if(req.query.taskName){
       cursor = collection.find({"task_name": req.query.taskName}).sort({"date_created": direction}).project({_id: 0});
       // for await (const doc of cursor){
