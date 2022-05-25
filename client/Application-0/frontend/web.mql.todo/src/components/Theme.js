@@ -6,8 +6,12 @@ import { colors } from "../colors";
 
 const themeConfig = {
   palette: {
-    primary: colors.green,
-    secondary: colors.green,
+    primary: {
+      main: '#BD6F84',
+    },
+    secondary: {
+      main: '#ffffff',
+    },
   },
 }
 
