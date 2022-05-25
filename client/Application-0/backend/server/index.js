@@ -21,7 +21,7 @@ MongoClient.connect(uri, (err, database) => {
 });
 
 app.get('/', async (req,res)=>{
-  collection.find().sort({"date created":-1}).project({_id: 0}).toArray((err,result)=>{
+  collection.find().sort({"date_created":-1}).toArray((err,result)=>{
     if(err)
       console.log(err);
     // console.log(result);
@@ -38,7 +38,7 @@ app.get('/', async (req,res)=>{
     
     let cursor;
     if(req.query.taskName){
-      cursor = collection.find({"task_name": req.query.taskName}).sort({"date_created": direction}).project({_id: 0});
+      cursor = collection.find({"task_name": req.query.taskName}).sort({"date_created": direction});
       // for await (const doc of cursor){
       //   count += doc.total_time;
       //   console.log(doc)
@@ -48,13 +48,9 @@ app.get('/', async (req,res)=>{
     }  
     
     if(!req.query.taskName)
-      collection.find({}).sort({"date_created": direction}).project({_id: 0}).toArray((err,result)=>{
-      if(direction == -1){
-        res.status(200).json(result.sort((a,b) => parseInt(b.time_created) - parseInt(a.time_created)));
-        console.log(result);
-        return; 
-      }
-        res.status(200).json(result);
+      collection.find({}).sort({"date_created": direction}).toArray((err,result)=>{
+        console.log('own sorting')
+        res.status(200).json({"tasks": result});
         return;
       });
   });
