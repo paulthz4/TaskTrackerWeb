@@ -8,6 +8,8 @@
 3. Your browser should open up to http:localhost:3000
 
 ### Backend:
-1. Have node installed installed node.js https://nodejs.org/en/
-2. Navigate to client\Application-0\backend and run npm install
-3. Navigate to client\Application-0\backend\server and run node index.js
+1. Have node installed installed node.js http://nodejs.org/en/
+2. Navigate to client\Application-0\backend and run `npm install`
+3. Navigate to client\Application-0\backend\server and run `node index.js`
+4. `listening on 3002` should appear in the terminal
+5. In your browser search http://localhost:3002. There should be an api response.
