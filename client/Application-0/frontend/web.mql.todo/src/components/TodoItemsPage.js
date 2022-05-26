@@ -18,6 +18,7 @@ import { MoreInfo } from "./MoreInfo";
 import TaskItem from "./TaskItem";
 import {useTasks} from "../hooks/useTasks_Node";
 import axios from "axios";
+import { Autocomplete, TextField } from "@mui/material";
 
 export function TodoItemsPage() {
   const { loading, todos, ...todoActions } = useTodos();
@@ -28,12 +29,19 @@ export function TodoItemsPage() {
   const [tasks, setTasks] = useState([]);
   
   useEffect(()=>{
-     axios.get('http://localhost:3002/').then(response => {
+     async function fetch(){axios.get('http://localhost:3002/').then(response => {
       setTasks(response.data.tasks);
        console.log(response);
      });
+    }
+      fetch();
+    
     console.log(tasks);
   },[]);
+  
+  const options = [];
+  tasks.map(i => options.includes(i.task_name) ?  options : options.push(i.task_name));
+  
   return (
     <Container className="main-container" maxWidth="sm">
       {loading ? (
@@ -53,10 +61,26 @@ export function TodoItemsPage() {
             startIcon={<AddIcon />}
             onClick={() => draftTodoActions.createDraftTodo()}
           >
-            Add To-Do
+            Add Task
           </Button>
+          <Autocomplete
+            disablePortal
+            id="disable-close-on-select"
+            options={options}
+            sx={{width: "12em", height: "1em", margin: "2em"}}
+            renderInput={(params) => <TextField {...params} label="Task" />}
+          />
+          
+          {draftTodos.map((draft) => (
+              <DraftTodoItem
+                key={String(draft._id)}
+                todo={draft}
+                todoActions={todoActions}
+                draftTodoActions={draftTodoActions}
+              />
+            ))}
           <List style={{ width: "100%" }} dense={true}>
-            {tasks && 
+            {
                 tasks.map((task) =>(
                 <TaskItem key={task._id} task={task} />
               ))
@@ -69,14 +93,7 @@ export function TodoItemsPage() {
                 todoActions={todoActions}
               />
             ))}
-            {draftTodos.map((draft) => (
-              <DraftTodoItem
-                key={String(draft._id)}
-                todo={draft}
-                todoActions={todoActions}
-                draftTodoActions={draftTodoActions}
-              />
-            ))}
+            
           </List>
         </div>
       )}

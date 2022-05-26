@@ -28,7 +28,7 @@ export default function Task({task}){
         <Typography><span style={{color: '#FFCA3C'}}> toppages:</span> {task.stoppages} </Typography>
       </ListItem>
       <ListItem>
-        <Typography><span style={{color: '#FFCA3C'}}>stoppage times:</span> {task.stoppage_times.map(time => <li key={time}>{time}</li>)}</Typography>
+        <Typography><span style={{color: '#FFCA3C'}}>stoppage times:</span> {task.stoppage_times.map((time, index) => <><br/><span key={index}>{time}</span><br/></>)}</Typography>
       </ListItem>
     </Box>
   );
