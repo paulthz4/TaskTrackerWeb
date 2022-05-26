@@ -43,8 +43,8 @@ export function TodoItemsPage() {
       ) : (
         <div className="todo-items-container">
           <Typography component="p" variant="h5">
-            {`You have ${todos.length} To-Do Item${
-              todos.length === 1 ? "" : "s"
+            {`You have ${tasks.length} Task${
+              tasks.length === 1 ? "" : "s"
             }`}
           </Typography>
           <Button

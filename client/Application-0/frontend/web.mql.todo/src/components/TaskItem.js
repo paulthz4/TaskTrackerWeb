@@ -13,7 +13,7 @@ export default function Task({task}){
       minWidth: 300,
     }}>
       <ListItem >
-        <Typography variant='h6'>{task.task_name}</Typography>
+        <Typography variant='h5'>{task.task_name}</Typography>
       </ListItem>
       <ListItem>
         <Typography><span style={{color: '#FFCA3C'}}>Date Created:</span> {task.date_created}</Typography>
