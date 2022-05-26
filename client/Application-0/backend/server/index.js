@@ -14,14 +14,14 @@ let collection;
 MongoClient.connect(uri, (err, database) => {
   if (err) 
     return console.log(err)
-  collection = database.db('all_tasks').collection("test_tasks")
+  collection = database.db('all_tasks').collection("tasks")
   app.listen( 3002, () => {
   console.log('listening on 3002')
   });
 });
 
 app.get('/', async (req,res)=>{
-  collection.find().sort({"date_created":-1}).toArray((err,result)=>{
+  collection.find().sort({"date_created":-1,"time_created": 1}).toArray((err,result)=>{
     if(err)
       console.log(err);
     // console.log(result);
@@ -38,7 +38,7 @@ app.get('/', async (req,res)=>{
     
     let cursor;
     if(req.query.taskName){
-      cursor = collection.find({"task_name": req.query.taskName}).sort({"date_created": direction});
+      cursor = collection.find({"task_name": req.query.taskName}).sort({"date_created": direction, "time_created": 1});
       // for await (const doc of cursor){
       //   count += doc.total_time;
       //   console.log(doc)
@@ -48,7 +48,7 @@ app.get('/', async (req,res)=>{
     }  
     
     if(!req.query.taskName)
-      collection.find({}).sort({"date_created": direction}).toArray((err,result)=>{
+      collection.find({}).sort({"date_created": direction, "time_created": 1}).toArray((err,result)=>{
         console.log('own sorting')
         res.status(200).json({"tasks": result});
         return;
