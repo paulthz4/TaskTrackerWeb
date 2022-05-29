@@ -1,12 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {
-  Container,
-  Button,
-  Typography,
-  List,
-  LinearProgress,
-  Divider,
-} from "@material-ui/core";
+import {  Container,Button,Typography,List,LinearProgress,Divider,} from "@material-ui/core";
 import './App.css';
 import AddIcon from "@material-ui/icons/Add";
 import { useTodos } from "../hooks/useTodos";
@@ -19,6 +12,7 @@ import TaskItem from "./TaskItem";
 import {useTasks} from "../hooks/useTasks_Node";
 import axios from "axios";
 import { Autocomplete, TextField } from "@mui/material";
+
 
 export function TodoItemsPage() {
   const { loading, todos, ...todoActions } = useTodos();
@@ -38,6 +32,10 @@ export function TodoItemsPage() {
     
     console.log(tasks);
   },[]);
+  
+  const onClick = async () =>{
+    axios.get('http://localhost:3002/tasks?').then(response => setTasks(response.data.tasks))
+  }
   
   const options = [];
   tasks.map(i => options.includes(i.task_name) ?  options : options.push(i.task_name));
@@ -68,7 +66,7 @@ export function TodoItemsPage() {
             id="disable-close-on-select"
             options={options}
             sx={{width: "12em", height: "1em", margin: "2em"}}
-            renderInput={(params) => <TextField {...params} label="Task" />}
+            renderInput={(params) => <TextField {...params} label="Search Task" />}
           />
           
           {draftTodos.map((draft) => (
