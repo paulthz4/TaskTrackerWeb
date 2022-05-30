@@ -4,8 +4,8 @@ import {motion, AnimatePresence} from 'framer-motion/dist/framer-motion';
 
 export default function Task({task}){
   const variants = {
-    visible:{opacity: 1},
-    hidden: {opacity: 0}
+    visible:{opacity: 1, y: 25},
+    hidden: {opacity: 0, y: -25}
   }
 
   return(
@@ -14,7 +14,7 @@ export default function Task({task}){
       initial="hidden"
       animate="visible"
       variants={variants}
-      transition={{duration: 1.2}}
+      transition={{duration: 1.3}}
       sx={{
         boxShadow: 2,
         my: 7,
