@@ -37,6 +37,10 @@ export function TodoItemsPage() {
     axios.get('http://localhost:3002/tasks?').then(response => setTasks(response.data.tasks))
   }
   
+  const onChange =(e)=>{
+    setTasks(e.target.value);
+  }
+  
   const options = [];
   tasks.map(i => options.includes(i.task_name) ?  options : options.push(i.task_name));
   
