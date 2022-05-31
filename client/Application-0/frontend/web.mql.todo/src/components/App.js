@@ -8,18 +8,17 @@ import { appId } from "../realm.json";
 import "./App.css";
 import * as Realm from 'realm-web';
 import React from 'react';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
+import {Chart as ChartJS,CategoryScale,LinearScale,PointElement,LineElement,Title,Tooltip,Legend,} from 'chart.js';
 import { Line } from 'react-chartjs-2';
-
+import {BrowserRouter,Route,Routes, Link} from "react-router-dom";
+import Insights from '../pages/Insights';
+import Home from "../pages/Home";
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import MenuItem from '@mui/material/MenuItem';
+import MenuList from '@mui/material/MenuList';
+import Stack from '@mui/material/Stack';
+import Links from '@mui/material/Link';
 
 const app = new Realm.App({id: "application-0-daeqg"});
 export default function AppWithRealm() {
@@ -111,7 +110,22 @@ function App() {
           ) : null}
         </Toolbar>
       </AppBar>
-      {currentUser ? <><TodoItemsPage /> <Line options={options} data={data}/></>: <WelcomePage />}
+      {currentUser ? 
+      <BrowserRouter>
+      <Stack direction="row" spacing="2" sx={{m:'3'}}>
+      <Paper>
+        <MenuList>
+          <Link to="/" className="link"><MenuItem component="router.Link" to="/">Home</MenuItem></Link>
+          <Link to="/insights" className="link"><MenuItem component="Link" to="/insights">Insights</MenuItem></Link>
+        </MenuList>
+      </Paper>
+      </Stack>
+      <Routes>
+        <Route path="/" element={<TodoItemsPage />} />
+        <Route path="/insights" element={<Insights />} />
+      </Routes>
+      </BrowserRouter>
+      : <WelcomePage />}
     </div>
   );
 }
