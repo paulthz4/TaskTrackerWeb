@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import {  Container,Button,Typography,List,LinearProgress,Divider,} from "@material-ui/core";
 import './App.css';
 import AddIcon from "@material-ui/icons/Add";
@@ -12,7 +12,7 @@ import TaskItem from "./TaskItem";
 import {useTasks} from "../hooks/useTasks_Node";
 import axios from "axios";
 import { Autocomplete, TextField } from "@mui/material";
-
+import SearchIcon from '@mui/icons-material/Search';
 
 export function TodoItemsPage() {
   const { loading, todos, ...todoActions } = useTodos();
@@ -21,29 +21,36 @@ export function TodoItemsPage() {
   const showLoader = useShowLoader(loading, 200);
   
   const [tasks, setTasks] = useState([]);
-  
+  const [searchText, setSearchText] = useState('');
+  let previousTasks = useRef([]);
   useEffect(()=>{
      async function fetch(){axios.get('http://localhost:3002/').then(response => {
       setTasks(response.data.tasks);
        console.log(response);
      });
     }
-      fetch();
-    
+    fetch();
     console.log(tasks);
   },[]);
   
-  const onClick = async () =>{
-    axios.get('http://localhost:3002/tasks?').then(response => setTasks(response.data.tasks))
+  
+  
+  const onSearchClick= async()=>{
+    await axios.get(`http://localhost:3002/tasks?taskName=${searchText}`).then(response=>setTasks(response.data.tasks))
+    //console.log(searchText)
+    console.log(tasks)
   }
   
-  const onChange =(e)=>{
-    setTasks(e.target.value);
+  const handleClose =()=>{
+    setTasks(previousTasks.content);
+  }
+  
+  function handleInputChange(e,v){
+    //console.log(v);
   }
   
   const options = [];
   tasks.map(i => options.includes(i.task_name) ?  options : options.push(i.task_name));
-  
   return (
     <Container className="main-container" maxWidth="sm">
       {loading ? (
@@ -66,13 +73,16 @@ export function TodoItemsPage() {
             Add Task
           </Button>
           <Autocomplete
+            inputValue={searchText}
+            onInputChange={(e,v)=>setSearchText(v)}
             disablePortal
-            id="disable-close-on-select"
+            onClose={(e)=>handleClose}
+           // id="disable-close-on"
             options={options}
-            sx={{width: "12em", height: "1em", margin: "2em"}}
+            sx={{width: "14em", height: "1em", margin: "2em"}}
             renderInput={(params) => <TextField {...params} label="Search Task" />}
           />
-          
+          <SearchIcon onClick={()=>onSearchClick()} />
           {draftTodos.map((draft) => (
               <DraftTodoItem
                 key={String(draft._id)}
@@ -83,8 +93,8 @@ export function TodoItemsPage() {
             ))}
           <List style={{ width: "100%" }} dense={true}>
             {
-                tasks.map((task) =>(
-                <TaskItem key={task._id} task={task} />
+              tasks.map((task) =>(
+              <TaskItem key={task._id} task={task} />
               ))
             }
             <br/><Divider/><br/><br/>
