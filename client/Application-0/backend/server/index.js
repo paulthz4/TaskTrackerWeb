@@ -24,26 +24,21 @@ app.get('/', async (req,res)=>{
   collection.find().sort({"date_created":-1,"time_created": 1}).toArray((err,result)=>{
     if(err)
       console.log(err);
-    // console.log(result);
     res.status(200).json({"tasks": result});
     return;
   });
   
   app.get('/tasks', async (req,res)=>{
     let direction;
-    if(!req.query.direction || req.query.direction === 'asc')
-      direction = 1;
-    else if(req.query.direction ==='desc')
+    if(!req.query.direction || req.query.direction === 'desc')
       direction = -1;
+    if(req.query.direction ==='asc')
+      direction = 1;
     
     let cursor;
     if(req.query.taskName){
       cursor = collection.find({"task_name": req.query.taskName}).sort({"date_created": direction, "time_created": 1});
-      // for await (const doc of cursor){
-      //   count += doc.total_time;
-      //   console.log(doc)
-      // }
-       res.status(200).json(await cursor.toArray());
+      res.status(200).json({"tasks": await cursor.toArray()});
       return;
     }  
     
