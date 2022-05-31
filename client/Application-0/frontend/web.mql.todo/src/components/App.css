@@ -61,3 +61,8 @@
   margin: auto;
   padding: 12em 5em;
 }
+
+.link{
+  color:inherit;
+  text-decoration:none;
+}
