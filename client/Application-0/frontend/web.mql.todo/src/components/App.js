@@ -1,6 +1,7 @@
 import { AppBar, Toolbar, Button, Typography } from "@material-ui/core";
 import { WelcomePage } from "./WelcomePage";
-import { TodoItemsPage } from "./TodoItemsPage";
+import { TodoItemsPage } from "../pages/TodoItemsPage";
+import TopNav from './TopNav';
 import { RealmAppProvider, useRealmApp } from "./RealmApp";
 import { ThemeProvider } from "./Theme";
 import { AppName } from "./AppName";
@@ -19,6 +20,7 @@ import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import Stack from '@mui/material/Stack';
 import Links from '@mui/material/Link';
+import AnimatedRoutes from "./AnimatedRoutes";
 
 const app = new Realm.App({id: "application-0-daeqg"});
 export default function AppWithRealm() {
@@ -47,48 +49,6 @@ function Login({ setUser }) {
   };
   return <button onClick={loginAnonymous}>Log In</button>;
 }
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
-export const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top',
-    },
-    title: {
-      display: true,
-      text: 'Chart.js Line Chart',
-    },
-  },
-};
-
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Dataset 1',
-      data: labels.map(() => 123),
-      borderColor: 'rgb(255, 99, 132)',
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-    {
-      label: 'Dataset 2',
-      data: labels.map(() => 200),
-      borderColor: 'rgb(53, 162, 235)',
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-  ],
-};
 
 function App() {
   const { currentUser, logOut } = useRealmApp();
@@ -98,6 +58,8 @@ function App() {
         <Toolbar>
           <AppName />
           {currentUser ? (
+          <>
+            {/* <TopNav/> */}
             <Button
               variant="contained"
               color="secondary"
@@ -107,23 +69,13 @@ function App() {
             >
               <Typography variant="button">Log Out</Typography>
             </Button>
+          </> 
           ) : null}
         </Toolbar>
       </AppBar>
       {currentUser ? 
       <BrowserRouter>
-      <Stack direction="row" spacing="2" sx={{m:'3'}}>
-      <Paper>
-        <MenuList>
-          <Link to="/" className="link"><MenuItem component="router.Link" to="/">Home</MenuItem></Link>
-          <Link to="/insights" className="link"><MenuItem component="Link" to="/insights">Insights</MenuItem></Link>
-        </MenuList>
-      </Paper>
-      </Stack>
-      <Routes>
-        <Route path="/" element={<TodoItemsPage />} />
-        <Route path="/insights" element={<Insights />} />
-      </Routes>
+        <AnimatedRoutes />
       </BrowserRouter>
       : <WelcomePage />}
     </div>

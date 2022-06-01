@@ -10,6 +10,8 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import {motion} from 'framer-motion/dist/framer-motion';
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -55,6 +57,13 @@ export const data = {
 export default function Insights(){
 
   return (
+  <motion.div
+    className="contact"
+    initial={{opacity:0}}
+    animate={{opacity:1}}
+    exit={{opacity:0, transition:{duration:0.5}}}
+  >
     <Line options={options} data={data}/>
+  </motion.div> 
   );
 }

@@ -1,19 +1,19 @@
 import React, {useEffect, useState, useRef} from "react";
 import {  Container,Button,Typography,List,LinearProgress,Divider,} from "@material-ui/core";
-import './App.css';
+import '../components/App.css';
 import AddIcon from "@material-ui/icons/Add";
 import { useTodos } from "../hooks/useTodos";
-import { TodoItem } from "./TodoItem";
+import { TodoItem } from "../components/TodoItem";
 import { useDraftTodos } from "../hooks/useDraftTodos";
-import { DraftTodoItem } from "./DraftTodoItem";
+import { DraftTodoItem } from "../components/DraftTodoItem";
 import { useShowLoader } from "../hooks/util-hooks";
-import { MoreInfo } from "./MoreInfo";
-import TaskItem from "./TaskItem";
+import TaskItem from "../components/TaskItem";
 import {useTasks} from "../hooks/useTasks_Node";
 import axios from "axios";
 import { Autocomplete, TextField } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
-
+import {motion} from 'framer-motion/dist/framer-motion';
+import { flexbox } from "@mui/system";
 export function TodoItemsPage() {
   const { loading, todos, ...todoActions } = useTodos();
   // const { tasks }  = useTasks();
@@ -52,13 +52,18 @@ export function TodoItemsPage() {
   const options = [];
   tasks.map(i => options.includes(i.task_name) ?  options : options.push(i.task_name));
   return (
-    <Container className="main-container" maxWidth="sm">
+    <Container component={motion.div} className="main-container"
+      initial={{opacity:0}}
+      animate={{opacity:1}}
+      exit={{opacity:0, transition:{duration:0.5}}} 
+      maxWidth="sm">
       {loading ? (
         showLoader ? (
           <LinearProgress />
         ) : null
       ) : (
         <div className="todo-items-container">
+        <motion.div initial={{opacity:0}} animate={{opacity:1, transition:{duration:3}}} style={{display:"flex", flexDirection:"column", justifyContent:"center",alignItems:"space-around"}} >
           <Typography component="p" variant="h5">
             {`You have ${tasks.length} Task${
               tasks.length === 1 ? "" : "s"
@@ -83,6 +88,7 @@ export function TodoItemsPage() {
             renderInput={(params) => <TextField {...params} label="Search Task" />}
           />
           <SearchIcon onClick={()=>onSearchClick()} />
+          </motion.div>
           {draftTodos.map((draft) => (
               <DraftTodoItem
                 key={String(draft._id)}

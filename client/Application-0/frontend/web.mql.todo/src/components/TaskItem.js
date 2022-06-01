@@ -1,6 +1,6 @@
 import React from 'react';
 import {ListItem, Box,  Typography} from "@mui/material";
-import {motion, AnimatePresence} from 'framer-motion/dist/framer-motion';
+import {motion} from 'framer-motion/dist/framer-motion';
 
 export default function Task({task}){
   const variants = {
