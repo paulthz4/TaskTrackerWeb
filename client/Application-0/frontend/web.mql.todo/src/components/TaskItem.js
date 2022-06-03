@@ -1,6 +1,6 @@
 import React from 'react';
 import {ListItem, Box,  Typography} from "@mui/material";
-import {motion} from 'framer-motion/dist/framer-motion';
+import {AnimatePresence, motion} from 'framer-motion/dist/framer-motion';
 
 export default function Task({task}){
   const variants = {
@@ -9,12 +9,14 @@ export default function Task({task}){
   }
 
   return(
+  <AnimatePresence exitBeforeEnter={true}>
     <Box 
       component={motion.div}
       initial="hidden"
       animate="visible"
       variants={variants}
-      transition={{duration: 1.3}}
+      exit={{opacity:0}}
+      transition={{duration: 1}}
       sx={{
         boxShadow: 2,
         my: 7,
@@ -42,5 +44,6 @@ export default function Task({task}){
         <Typography><span style={{color: '#FFCA3C'}}>Stoppage times:</span> {task.stoppage_times.map((time, index) => <><br/><span key={index}>{time}</span><br/></>)}</Typography>
       </ListItem>
     </Box>
+    </AnimatePresence>
   );
 }

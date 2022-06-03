@@ -1,7 +1,5 @@
 import { AppBar, Toolbar, Button, Typography } from "@material-ui/core";
 import { WelcomePage } from "./WelcomePage";
-import { TodoItemsPage } from "../pages/TodoItemsPage";
-import TopNav from './TopNav';
 import { RealmAppProvider, useRealmApp } from "./RealmApp";
 import { ThemeProvider } from "./Theme";
 import { AppName } from "./AppName";
@@ -9,17 +7,7 @@ import { appId } from "../realm.json";
 import "./App.css";
 import * as Realm from 'realm-web';
 import React from 'react';
-import {Chart as ChartJS,CategoryScale,LinearScale,PointElement,LineElement,Title,Tooltip,Legend,} from 'chart.js';
-import { Line } from 'react-chartjs-2';
-import {BrowserRouter,Route,Routes, Link} from "react-router-dom";
-import Insights from '../pages/Insights';
-import Home from "../pages/Home";
-import Paper from '@mui/material/Paper';
-import Popper from '@mui/material/Popper';
-import MenuItem from '@mui/material/MenuItem';
-import MenuList from '@mui/material/MenuList';
-import Stack from '@mui/material/Stack';
-import Links from '@mui/material/Link';
+import {BrowserRouter} from "react-router-dom";
 import AnimatedRoutes from "./AnimatedRoutes";
 
 const app = new Realm.App({id: "application-0-daeqg"});

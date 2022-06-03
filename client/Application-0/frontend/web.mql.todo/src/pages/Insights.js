@@ -1,15 +1,6 @@
 import {React} from 'react';
 import { Line } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
+import {Chart as ChartJS,CategoryScale,LinearScale,PointElement,LineElement,Title,Tooltip,Legend,} from 'chart.js';
 import {motion} from 'framer-motion/dist/framer-motion';
 
 ChartJS.register(
@@ -60,8 +51,8 @@ export default function Insights(){
   <motion.div
     className="contact"
     initial={{opacity:0}}
-    animate={{opacity:1}}
-    exit={{opacity:0, transition:{duration:0.5}}}
+    animate={{opacity:1, transition:{duration:1}}}
+    exit={{opacity:0, transition:{duration:0.2}}}
   >
     <Line options={options} data={data}/>
   </motion.div> 
