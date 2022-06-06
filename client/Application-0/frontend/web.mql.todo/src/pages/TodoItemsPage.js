@@ -25,7 +25,7 @@ export function TodoItemsPage() {
      async function fetch(){await axios.get('http://localhost:3002/').then(response => {
       setTasks(response.data.tasks);
       const array = [];
-      response.data.tasks.map(i => options.includes(i.task_name) ?  array : array.push(i.task_name));
+      response.data.tasks.map(i => array.includes(i.task_name) ?  array : array.push(i.task_name));
       setOptions(array);
        console.log(response);
      });
