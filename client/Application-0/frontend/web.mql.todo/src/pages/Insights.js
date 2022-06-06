@@ -4,7 +4,7 @@ import {Chart as ChartJS,CategoryScale,LinearScale,PointElement,LineElement,Titl
 import {motion} from 'framer-motion/dist/framer-motion';
 import axios from 'axios';
 import { Box } from '@material-ui/core';
-
+import './pages.css'
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -43,31 +43,34 @@ export const datas = {
   ],
 };
 export default function Insights(){
-  const labels = ['9:00', '10:00', '11:00', '12:00', '1:00', '2:00', '3:00', '4:00', '5:00', '6:00', '7:00'];
+  const [labels, setLabels] = useState([]);
   const [metaData, setMetaData] = useState([]);
   const dataSet = {
     labels,
     datasets:[
       {  
-        label: labels,
+        label: "stoppages",
         data: metaData,
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        borderColor: 'rgb(102, 102, 255)',
+        backgroundColor: 'rgba(128, 128, 255, 0.5)',
       }
     ]
   };
   useEffect(()=>{
     axios.get('http://localhost:3002/').then(response=>{
-      // setData(values=>({
-      //   ...values, 
-      //   data: response.data.tasks.map(i=> i.stoppages)
-      // }))
       let arr = [];
-      response.data.tasks.map(i=>i.stoppage_times.map(j=>{
-          let temp = [];
-          temp = j.split(":");
-          arr.push(parseInt(temp[0]) + (temp[1]/60))
-        })); 
+      let labels = []
+      // ***** use this for stoppages data chart ******
+      // response.data.tasks.map(i=>i.stoppage_times.map(j=>{
+      //     let temp = [];
+      //     temp = j.split(":");
+      //     arr.push(parseInt(temp[0]) + (temp[1]/60))
+      //   })); 
+      response.data.tasks.map(i=>{
+        arr.push(i.stoppages);
+        labels.push(i.date_created)
+      });
+      setLabels(labels);
       setMetaData(arr);
       console.log(metaData);
       console.log(arr);
@@ -75,8 +78,8 @@ export default function Insights(){
     
   },[]);
   return (
-  <Box component={motion.div} sx={{my:15}}
-    className="contact"
+  <Box component={motion.div}
+    className="chart"
     initial={{opacity:0}}
     animate={{opacity:1, transition:{duration:1}}}
     exit={{opacity:0, transition:{duration:0.2}}}
