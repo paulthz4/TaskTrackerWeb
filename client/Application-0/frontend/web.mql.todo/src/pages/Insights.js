@@ -57,36 +57,31 @@ export default function Insights(){
     ]
   };
   
-  
-  
   useEffect(()=>{
      axios.get('http://localhost:3002/').then(response=>{
+      /**** use this for stoppages data chart ******
       let arr = [];
-      let labelMap = new Set();
-      // ***** use this for stoppages data chart ******
-      // response.data.tasks.map(i=>i.stoppage_times.map(j=>{
-      //     let temp = [];
-      //     temp = j.split(":");
-      //     arr.push(parseInt(temp[0]) + (temp[1]/60))
-      //   })); 
+      response.data.tasks.map(i=>i.stoppage_times.map(j=>{
+          let temp = [];
+          temp = j.split(":");
+          arr.push(parseInt(temp[0]) + (temp[1]/60))
+        })); 
+      *****/
+      let map = new Map();
       
       for(let i = 0; i < response.data.tasks.length; i++){
-        if(i+2 < response.data.tasks.length){
-          if(response.data.tasks[i].date_created === response.data.tasks[i+1].date_created)
-            arr.push(response.data.tasks[i].stoppages + response.data.tasks[i+1].stoppages);
-          else{
-          arr.push(response.data.tasks[i].stoppages);
-          }
-        }
-        labelMap.add(response.data.tasks[i].date_created);
+        if(map.has(response.data.tasks[i].date_created))
+          map.set(response.data.tasks[i].date_created, map.get(response.data.tasks[i].date_created) + response.data.tasks[i].stoppages)
+        else
+          map.set(response.data.tasks[i].date_created, response.data.tasks[i].stoppages)
       }
-      setLabels(Array.from(labelMap));
-      setMetaData(arr);
-      console.log("labels array",Array.from(labelMap));
-      console.log("data array",arr);
+      setLabels(Array.from(map.keys()));
+      setMetaData(Array.from(map.values()));
+      console.log("labels array",Array.from(map.keys()));
+      console.log("data array",Array.from(map.values()));
     });
-   
   },[]);
+  
   return (
   <Box component={motion.div}
     className="chart"
