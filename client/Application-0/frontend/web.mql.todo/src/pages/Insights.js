@@ -28,14 +28,14 @@ export const options = {
   },
 };
 
-const labels = ['9:00', '10:00', '11:00', '12:00', '1:00', '2:00', '3:00', '4:00', '5:00', '6:00', '7:00'];
+export const timeLabels = ['9:00', '10:00', '11:00', '12:00', '1:00', '2:00', '3:00', '4:00', '5:00', '6:00', '7:00'];
 
 export const datas = {
-  labels,
+  timeLabels,
   datasets: [
     {
       label: 'Dataset 1',
-      data: [1,5,6,4,5,6,4],
+      data: [1,5,6,4,5,6,4.5,6,8,5],
       borderColor: 'rgb(255, 99, 132)',
       backgroundColor: 'rgba(255, 99, 132, 0.5)',
     },
@@ -45,6 +45,59 @@ export const datas = {
 export default function Insights(){
   const [labels, setLabels] = useState([]);
   const [metaData, setMetaData] = useState([]);
+  
+  const [lengthData, setLengthData] = useState([]);
+  const [lengthLabels, setLengthLabels] = useState([]);
+  
+  useEffect(()=>{
+    async function get(){await axios.get('http://localhost:3002/').then(response=>{
+      /**** use this for stoppages data chart ******
+      let arr = [];
+      response.data.tasks.map(i=>i.stoppage_times.map(j=>{
+          let temp = [];
+          temp = j.split(":");
+          arr.push(parseInt(temp[0]) + (temp[1]/60))
+        })); 
+      *****/
+      const stoppageMap = new Map();
+      const lengthMap = new Map();
+      
+      // loops through the 'tasks' array response from the axios request to make use of the data in the charts
+       for(let i = 0; i < response.data.tasks.length; i++){
+        // for the total number of stoppages chart. Adds the total number of stoppages in a day. Key => date_created, value=> number of stoppages
+        if(stoppageMap.has(response.data.tasks[i].date_created))
+        stoppageMap.set(response.data.tasks[i].date_created, stoppageMap.get(response.data.tasks[i].date_created) + response.data.tasks[i].stoppages);
+        else
+        stoppageMap.set(response.data.tasks[i].date_created, response.data.tasks[i].stoppages);
+        
+        // for the length of tasks in a day chart. 
+        let temp = response.data.tasks[i].total_time+"";
+        // console.log("temp", temp)
+        temp = temp.split(" ");
+        let time = 0;
+        if(temp[1] === "hours" || temp[1] === "hour")
+          time = parseFloat(temp[0]) + (parseFloat(temp[2])/60);
+        else if( temp[1] === "minutes")
+         time = (parseFloat(temp[0])/60) + (parseFloat(temp[2])/3600);
+        console.log( time)
+        if(lengthMap.has(response.data.tasks[i].date_created)){
+          lengthMap.set(response.data.tasks[i].date_created, parseFloat(lengthMap.get(response.data.tasks[i].date_created)).toFixed(2) + parseFloat(time));
+        }
+        else 
+        lengthMap.set(response.data.tasks[i].date_created, parseFloat(time).toFixed(2));
+      }
+      setLabels(Array.from(stoppageMap.keys()));
+      setMetaData(Array.from(stoppageMap.values()));
+      
+      console.log("length keys", Array.from(lengthMap.keys()));
+      console.log("length values", Array.from(lengthMap.values()));
+
+      // console.log("labels array",Array.from(stoppageMap.keys()));
+      // console.log("data array",Array.from(stoppageMap.values()));
+    });
+  }
+  get();
+  },[]);
   const stoppageData = {
     labels,
     datasets:[
@@ -57,31 +110,18 @@ export default function Insights(){
     ]
   };
   
-  useEffect(()=>{
-     axios.get('http://localhost:3002/').then(response=>{
-      /**** use this for stoppages data chart ******
-      let arr = [];
-      response.data.tasks.map(i=>i.stoppage_times.map(j=>{
-          let temp = [];
-          temp = j.split(":");
-          arr.push(parseInt(temp[0]) + (temp[1]/60))
-        })); 
-      *****/
-      let map = new Map();
-      
-      for(let i = 0; i < response.data.tasks.length; i++){
-        if(map.has(response.data.tasks[i].date_created))
-          map.set(response.data.tasks[i].date_created, map.get(response.data.tasks[i].date_created) + response.data.tasks[i].stoppages)
-        else
-          map.set(response.data.tasks[i].date_created, response.data.tasks[i].stoppages)
+  const lengthChartData = {
+    labels:timeLabels,
+    datasets:[
+      {  
+        label: "length of tasks",
+        data: [1,5,6,4,5,6,4.5,6,8,5,6],
+        borderColor: 'rgb(26, 255, 140)',
+        backgroundColor: 'rgba(26, 255, 140, 0.5)',
       }
-      setLabels(Array.from(map.keys()));
-      setMetaData(Array.from(map.values()));
-      console.log("labels array",Array.from(map.keys()));
-      console.log("data array",Array.from(map.values()));
-    });
-  },[]);
-  
+    ]
+  };
+  //console.log(datas)
   return (
   <Box component={motion.div}
     className="chart"
@@ -90,6 +130,7 @@ export default function Insights(){
     exit={{opacity:0, transition:{duration:0.2}}}
   >
     <Line options={options} data={stoppageData}/>
+    <Line options={options} data={lengthChartData}  />
   </Box> 
   );
 }
