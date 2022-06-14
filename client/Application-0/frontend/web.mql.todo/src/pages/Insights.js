@@ -45,7 +45,7 @@ export const datas = {
 export default function Insights(){
   const [labels, setLabels] = useState([]);
   const [metaData, setMetaData] = useState([]);
-  const dataSet = {
+  const stoppageData = {
     labels,
     datasets:[
       {  
@@ -56,26 +56,36 @@ export default function Insights(){
       }
     ]
   };
+  
+  
+  
   useEffect(()=>{
-    axios.get('http://localhost:3002/').then(response=>{
+     axios.get('http://localhost:3002/').then(response=>{
       let arr = [];
-      let labels = []
+      let labelMap = new Set();
       // ***** use this for stoppages data chart ******
       // response.data.tasks.map(i=>i.stoppage_times.map(j=>{
       //     let temp = [];
       //     temp = j.split(":");
       //     arr.push(parseInt(temp[0]) + (temp[1]/60))
       //   })); 
-      response.data.tasks.map(i=>{
-        arr.push(i.stoppages);
-        labels.push(i.date_created)
-      });
-      setLabels(labels);
+      
+      for(let i = 0; i < response.data.tasks.length; i++){
+        if(i+2 < response.data.tasks.length){
+          if(response.data.tasks[i].date_created === response.data.tasks[i+1].date_created)
+            arr.push(response.data.tasks[i].stoppages + response.data.tasks[i+1].stoppages);
+          else{
+          arr.push(response.data.tasks[i].stoppages);
+          }
+        }
+        labelMap.add(response.data.tasks[i].date_created);
+      }
+      setLabels(Array.from(labelMap));
       setMetaData(arr);
-      console.log(metaData);
-      console.log(arr);
+      console.log("labels array",Array.from(labelMap));
+      console.log("data array",arr);
     });
-    
+   
   },[]);
   return (
   <Box component={motion.div}
@@ -84,7 +94,7 @@ export default function Insights(){
     animate={{opacity:1, transition:{duration:1}}}
     exit={{opacity:0, transition:{duration:0.2}}}
   >
-    <Line options={options} data={dataSet}/>
+    <Line options={options} data={stoppageData}/>
   </Box> 
   );
 }
