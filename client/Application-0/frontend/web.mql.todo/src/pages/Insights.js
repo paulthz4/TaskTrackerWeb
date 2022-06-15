@@ -15,22 +15,35 @@ ChartJS.register(
   Legend
 );
 
-export const options = {
+export const options1 = {
   responsive: true,
   plugins: {
     legend: {
-      position: 'top',
+      position: 'right',
     },
     title: {
       display: true,
-      text: 'Task Insights in Stoppage times',
+      text: 'Tasks Insights ',
+    },
+  },
+};
+
+export const options2 = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'right',
+    },
+    title: {
+      display: true,
+      text: 'Total Length of Tasks per Day',
     },
   },
 };
 
 export const timeLabels = ['9:00', '10:00', '11:00', '12:00', '1:00', '2:00', '3:00', '4:00', '5:00', '6:00', '7:00'];
 
-export const datas = {
+export const example = {
   timeLabels,
   datasets: [
     {
@@ -72,22 +85,24 @@ export default function Insights(){
         
         // for the length of tasks in a day chart. 
         let temp = response.data.tasks[i].total_time+"";
-        // console.log("temp", temp)
         temp = temp.split(" ");
         let time = 0;
         if(temp[1] === "hours" || temp[1] === "hour")
           time = parseFloat(temp[0]) + (parseFloat(temp[2])/60);
         else if( temp[1] === "minutes")
          time = (parseFloat(temp[0])/60) + (parseFloat(temp[2])/3600);
-        console.log( time)
+         
         if(lengthMap.has(response.data.tasks[i].date_created)){
-          lengthMap.set(response.data.tasks[i].date_created, parseFloat(lengthMap.get(response.data.tasks[i].date_created)).toFixed(2) + parseFloat(time));
+          lengthMap.set(response.data.tasks[i].date_created, parseFloat(lengthMap.get(response.data.tasks[i].date_created)) + parseFloat(time));
         }
         else 
-        lengthMap.set(response.data.tasks[i].date_created, parseFloat(time).toFixed(2));
+          lengthMap.set(response.data.tasks[i].date_created, parseFloat(time));
       }
       setLabels(Array.from(stoppageMap.keys()));
       setMetaData(Array.from(stoppageMap.values()));
+      
+      setLengthLabels(Array.from(lengthMap.keys()));
+      setLengthData(Array.from(lengthMap.values()));
       
       console.log("length keys", Array.from(lengthMap.keys()));
       console.log("length values", Array.from(lengthMap.values()));
@@ -102,20 +117,26 @@ export default function Insights(){
     labels,
     datasets:[
       {  
-        label: "stoppages",
+        label: "Stoppages",
         data: metaData,
         borderColor: 'rgb(102, 102, 255)',
         backgroundColor: 'rgba(128, 128, 255, 0.5)',
+      },
+      {  
+        label: "Task length",
+        data: lengthData,
+        borderColor: 'rgb(26, 255, 140)',
+        backgroundColor: 'rgba(26, 255, 140, 0.5)',
       }
     ]
   };
   
   const lengthChartData = {
-    labels:timeLabels,
+    labels:lengthLabels,
     datasets:[
       {  
-        label: "length of tasks",
-        data: [1,5,6,4,5,6,4.5,6,8,5,6],
+        label: "Task length",
+        data: lengthData,
         borderColor: 'rgb(26, 255, 140)',
         backgroundColor: 'rgba(26, 255, 140, 0.5)',
       }
@@ -129,8 +150,8 @@ export default function Insights(){
     animate={{opacity:1, transition:{duration:1}}}
     exit={{opacity:0, transition:{duration:0.2}}}
   >
-    <Line options={options} data={stoppageData}/>
-    <Line options={options} data={lengthChartData}  />
+    <Line options={options1} data={stoppageData}/>
+    <Line options={options2} data={lengthChartData}  />
   </Box> 
   );
 }
