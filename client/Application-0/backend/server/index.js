@@ -21,7 +21,7 @@ MongoClient.connect(uri, (err, database) => {
 });
 
 app.get('/', async (req,res)=>{
-  collection.find().sort({"date_created":-1,"time_created": 1}).toArray((err,result)=>{
+  collection.find().sort({"date_created":1,"time_created": -1}).toArray((err,result)=>{
     if(err)
       console.log(err);
     res.status(200).json({"tasks": result});
