@@ -1,7 +1,7 @@
-.chart{
+.chart-container{
   display: flex;
   margin: 4% auto;
-  width: 85%;
+  width: 50%;
   height: auto;
   flex-direction: column;
   gap: 8em;
