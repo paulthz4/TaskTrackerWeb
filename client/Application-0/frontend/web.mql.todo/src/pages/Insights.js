@@ -5,6 +5,7 @@ import { BoxPlotController, BoxAndWiskers } from '@sgratzl/chartjs-chart-boxplot
 import {motion} from 'framer-motion/dist/framer-motion';
 import axios from 'axios';
 import { Box } from '@material-ui/core';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import './pages.css'
 ChartJS.register(
   RadialLinearScale, 
@@ -203,7 +204,29 @@ export default function Insights(){
     animate={{opacity:1, transition:{duration:1}}}
     exit={{opacity:0, transition:{duration:0.2}}}
   >
-    <Line options={{
+    <Box display="inline" style={{position:"relative"}}>    
+      <InfoOutlinedIcon className="info-icon" fontSize="extra-small"	/>
+      <Line options={{
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: 'right',
+                },
+                title: {
+                  display: true,
+                  text: 'Tasks Insights ',
+                },
+              },
+            }}
+      data={stoppageChart} className="chart"/>
+    </Box>
+    <Box display="inline" style={{position:"relative"}}>
+      <InfoOutlinedIcon className="info-icon" fontSize="extra-small"	/>
+      <Chart
+          type="boxplot"
+          data={boxplotchart}
+          className="chart"
+          options={{
             responsive: true,
             plugins: {
               legend: {
@@ -211,29 +234,16 @@ export default function Insights(){
               },
               title: {
                 display: true,
-                text: 'Tasks Insights ',
+                text: 'Total Length of Tasks per Day',
               },
             },
           }}
-     data={stoppageChart} className="chart"/>
-    <Chart
-        type="boxplot"
-        data={boxplotchart}
-        className="chart"
-        options={{
-          responsive: true,
-          plugins: {
-            legend: {
-              position: 'right',
-            },
-            title: {
-              display: true,
-              text: 'Total Length of Tasks per Day',
-            },
-          },
-        }}
-      />
-    <PolarArea data={chart3} />
+        />
+      </Box>  
+    <Box display="inline" style={{position:"relative"}}>
+      <InfoOutlinedIcon className="info-icon" fontSize="extra-small"	/>
+      <PolarArea data={chart3} />
+    </Box>
   </Box> 
   );
 }
