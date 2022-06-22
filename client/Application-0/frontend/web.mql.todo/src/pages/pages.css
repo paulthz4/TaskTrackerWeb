@@ -4,5 +4,11 @@
   width: 50%;
   height: auto;
   flex-direction: column;
-  gap: 8em;
+  gap: 12em;
+}
+
+.info-icon{
+  position: absolute;
+  right:3%;
+  color:grey;
 }
