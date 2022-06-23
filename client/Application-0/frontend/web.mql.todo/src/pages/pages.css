@@ -10,13 +10,28 @@
 .info-icon{
   position: absolute;
   right:3%;
-  color:grey;
+  color:rgb(122, 122, 122);
 }
 
 .info-icon-text{
   position: absolute;
-  right:2%;
+  right:-12%;
   top:19px;
   max-width: 20%;
   z-index: 3;
+  font-size: 14px;
+  color: white;
+  padding: 1%;
+  background-color: rgb(197, 197, 197);
+  border-radius: 4%;
+}
+
+.normal{
+  transition: 1s;
+  display: auto;
+}
+
+.none{
+  transition: 1s;
+  display: none;
 }

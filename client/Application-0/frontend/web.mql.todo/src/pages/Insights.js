@@ -212,7 +212,7 @@ export default function Insights(){
   
   const handleHover =(e)=>{
     e.preventDefault();
-    setInfoStyle("none");
+    setInfoStyle("normal");
   }
   
   const mouseLeave = (e)=>{
@@ -229,7 +229,7 @@ export default function Insights(){
   >
     <Box display="inline" style={{position:"relative"}}>    
       <InfoOutlinedIcon className="info-icon" fontSize="extra-small" id="line-chart"	onMouseEnter={(e)=> handleHover(e)} onMouseLeave={(e)=> mouseLeave(e)}/>
-      <div fontSize="9px"className="info-icon-text"   style={{display: infoStyle}} >{text1}</div>
+      <div fontSize="9px" className={`info-icon-text ${infoStyle}`} >{text1}</div>
       <Line options={{
               responsive: true,
               plugins: {
@@ -245,8 +245,8 @@ export default function Insights(){
       data={stoppageChart} className="chart"/>
     </Box>
     <Box display="inline" style={{position:"relative"}}>
-      <InfoOutlinedIcon className="info-icon" fontSize="extra-small" id="box-plot"	onMouseOver={(e)=>handleHover(e)} onMouseLeave={(e)=> mouseLeave(e)}/>
-      <div fontSize="9px"className="info-icon-text" style={{display: infoStyle}}>{text2}</div>
+      <InfoOutlinedIcon className="info-icon" fontSize="extra-small" id="box-plot"	onMouseEnter={(e)=>handleHover(e)} onMouseLeave={(e)=> mouseLeave(e)}/>
+      <div fontSize="9px" className={`info-icon-text ${infoStyle}`} >{text2}</div>
       <Chart
           type="boxplot"
           data={boxplotchart}
@@ -266,8 +266,8 @@ export default function Insights(){
         />
       </Box>  
     <Box display="inline" style={{position:"relative"}}>
-      <InfoOutlinedIcon className="info-icon" fontSize="extra-small"	id="polar-chart" onMouseOver={(e)=>handleHover(e)} onMouseLeave={(e)=> mouseLeave(e)}/>
-      <div fontSize="9px"className="info-icon-text" style={{display: infoStyle}}>{text3}</div>
+      <InfoOutlinedIcon className="info-icon" fontSize="extra-small"	id="polar-chart" onMouseEnter={(e)=>handleHover(e)} onMouseLeave={(e)=> mouseLeave(e)}/>
+      <div fontSize="9px" className={`info-icon-text ${infoStyle}`} >{text3}</div>
       <PolarArea data={chart3} />
     </Box>
   </Box> 
