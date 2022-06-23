@@ -4,7 +4,7 @@ import {Chart as ChartJS,RadialLinearScale,  ArcElement,CategoryScale,LinearScal
 import { BoxPlotController, BoxAndWiskers } from '@sgratzl/chartjs-chart-boxplot';
 import {motion} from 'framer-motion/dist/framer-motion';
 import axios from 'axios';
-import { Box } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import './pages.css'
 ChartJS.register(
@@ -38,6 +38,12 @@ export const options1 = {
 
 export const timeLabels = ['9:00', '10:00', '11:00', '12:00', '1:00', '2:00', '3:00', '4:00', '5:00', '6:00', '7:00'];
 
+export const text1 = "This chart shows the total lengnth of time you've been working each day";
+
+export const text2 = "This chart shows the length each productivity session and the median, shortest, and longest.";
+
+export const text3 = "This chart shows the session length of the 5th tast. Ideally you want the length to be equal i.e. each part of the chart should be the same"
+
 export default function Insights(){
   const [labels, setLabels] = useState([]);
   const [stoppageData, setstoppageData] = useState([]);
@@ -51,6 +57,10 @@ export default function Insights(){
   // box plot data
   const [boxplotData, setBoxPlotData] = useState([]);
   const [boxplotLabels, setBoxplotLabels] = useState([]);
+  
+  const [infoText, setInfoText] = useState("");
+  const [infoStyle, setInfoStyle] = useState("none");
+  
   useEffect(()=>{
      axios.get('http://localhost:3002/').then(response=>{
       /**** use this for stoppages data chart ******
@@ -95,8 +105,8 @@ export default function Insights(){
         response.data.tasks[i].stoppage_times.map(j => {
           let temp  = j.split(":");
           sessionTime = parseFloat(temp[0]) + (parseFloat(temp[1])/60) + (parseFloat(temp[2])/3600);
-          console.log("sess time", sessionTime)
-       
+          //console.log("sess time", sessionTime)
+          
           if(boxplotMap.has(response.data.tasks[i].task_name)){
             let arr = [];
             Array.from(boxplotMap.get(response.data.tasks[i].task_name)).map(e => arr.push(e));
@@ -107,6 +117,22 @@ export default function Insights(){
             boxplotMap.set(response.data.tasks[i].task_name, [sessionTime])
           }
         });
+        
+        // chart 3 length of session times
+        let arr = [];
+        if(response.data.tasks[i].task_name === "break")
+          response.data.tasks[i].stoppage_times.map((i, index) => {
+            let temp  = i.split(":");
+            let sessionTime = 0;
+            sessionTime = parseFloat(temp[0]) + (parseFloat(temp[1])/60) + (parseFloat(temp[2])/3600);
+            if(polarMap.has(index+1)){
+              arr = Array.from(polarMap.get(index+1));
+              console.log("arr", arr);
+              polarMap.set(index+1, polarMap.get(index+1) + sessionTime);
+            }
+            else
+              polarMap.set(index + 1, sessionTime);
+          });
       }
       setLabels(Array.from(map.keys()));
       setstoppageData(Array.from(map.values()));
@@ -116,20 +142,7 @@ export default function Insights(){
       console.log("length keys", Array.from(lengthMap.keys()));
       console.log("length values", Array.from(lengthMap.values()));
       
-      // chart 3 length of session times
-      let arr = [];
-      response.data.tasks[5].stoppage_times.map((i, index) => {
-        let temp  = i.split(":");
-        let sessionTime = 0;
-        sessionTime = parseFloat(temp[0]) + (parseFloat(temp[1])/60) + (parseFloat(temp[2])/3600);
-        if(polarMap.has(response.data.tasks[5].task_name)){
-          arr = Array.from(polarMap.get(response.data.tasks[5].task_name));
-          console.log("arr", arr);
-          polarMap.set(response.data.tasks[5].task_name, polarMap.get(index) + sessionTime);
-        }
-        else
-        polarMap.set(index + 1, sessionTime);
-     });
+      
      console.log(Array.from(polarMap.keys()));
      console.log(Array.from(polarMap.values()));
      
@@ -138,6 +151,7 @@ export default function Insights(){
      
      setBoxPlotData(Array.from(boxplotMap.values()));
      setBoxplotLabels(Array.from(boxplotMap.keys()));
+     
      console.log("box plot values", Array.from(boxplotMap.values()));
      console.log("box plot labels", Array.from(boxplotMap.keys()));
      
@@ -163,7 +177,6 @@ export default function Insights(){
   };
   
   const boxplotchart = {
-    // define label tree
     labels: boxplotLabels,
     datasets: [
       {
@@ -196,7 +209,17 @@ export default function Insights(){
     },
   ],
   };
-  //console.log(datas)
+  
+  const handleHover =(e)=>{
+    e.preventDefault();
+    setInfoStyle("none");
+  }
+  
+  const mouseLeave = (e)=>{
+    e.preventDefault();
+    setInfoStyle("none");
+  }
+  
   return (
   <Box component={motion.div} sx={{width:"60%"}}
     className="chart-container"
@@ -205,7 +228,8 @@ export default function Insights(){
     exit={{opacity:0, transition:{duration:0.2}}}
   >
     <Box display="inline" style={{position:"relative"}}>    
-      <InfoOutlinedIcon className="info-icon" fontSize="extra-small"	/>
+      <InfoOutlinedIcon className="info-icon" fontSize="extra-small" id="line-chart"	onMouseEnter={(e)=> handleHover(e)} onMouseLeave={(e)=> mouseLeave(e)}/>
+      <div fontSize="9px"className="info-icon-text"   style={{display: infoStyle}} >{text1}</div>
       <Line options={{
               responsive: true,
               plugins: {
@@ -221,7 +245,8 @@ export default function Insights(){
       data={stoppageChart} className="chart"/>
     </Box>
     <Box display="inline" style={{position:"relative"}}>
-      <InfoOutlinedIcon className="info-icon" fontSize="extra-small"	/>
+      <InfoOutlinedIcon className="info-icon" fontSize="extra-small" id="box-plot"	onMouseOver={(e)=>handleHover(e)} onMouseLeave={(e)=> mouseLeave(e)}/>
+      <div fontSize="9px"className="info-icon-text" style={{display: infoStyle}}>{text2}</div>
       <Chart
           type="boxplot"
           data={boxplotchart}
@@ -241,7 +266,8 @@ export default function Insights(){
         />
       </Box>  
     <Box display="inline" style={{position:"relative"}}>
-      <InfoOutlinedIcon className="info-icon" fontSize="extra-small"	/>
+      <InfoOutlinedIcon className="info-icon" fontSize="extra-small"	id="polar-chart" onMouseOver={(e)=>handleHover(e)} onMouseLeave={(e)=> mouseLeave(e)}/>
+      <div fontSize="9px"className="info-icon-text" style={{display: infoStyle}}>{text3}</div>
       <PolarArea data={chart3} />
     </Box>
   </Box> 
