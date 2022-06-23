@@ -12,3 +12,11 @@
   right:3%;
   color:grey;
 }
+
+.info-icon-text{
+  position: absolute;
+  right:2%;
+  top:19px;
+  max-width: 20%;
+  z-index: 3;
+}
