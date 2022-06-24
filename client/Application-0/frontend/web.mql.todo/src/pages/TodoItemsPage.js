@@ -8,6 +8,7 @@ import { useDraftTodos } from "../hooks/useDraftTodos";
 import { DraftTodoItem } from "../components/DraftTodoItem";
 import { useShowLoader } from "../hooks/util-hooks";
 import TaskItem from "../components/TaskItem";
+import TaskTracker from "../components/TaskTracker";
 import axios from "axios";
 import { Autocomplete, TextField } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
@@ -54,6 +55,7 @@ export function TodoItemsPage() {
         ) : null
       ) : (
         <div className="todo-items-container">
+          <TaskTracker/>
           <Typography component="p" variant="h5">
             {`You have ${tasks.length} Task${
               tasks.length === 1 ? "" : "s"
