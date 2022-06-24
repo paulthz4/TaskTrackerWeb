@@ -16,19 +16,18 @@
 .info-icon-text{
   position: absolute;
   right:-12%;
-  top:19px;
+  top:22px;
   max-width: 20%;
-  z-index: 3;
   font-size: 14px;
   color: white;
   padding: 1%;
   background-color: rgb(197, 197, 197);
-  border-radius: 4%;
+  border-radius: 3%;
 }
 
 .normal{
   transition: 1s;
-  display: auto;
+  display: initial;
 }
 
 .none{

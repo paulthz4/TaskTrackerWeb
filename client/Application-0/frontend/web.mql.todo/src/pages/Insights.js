@@ -63,14 +63,6 @@ export default function Insights(){
   
   useEffect(()=>{
      axios.get('http://localhost:3002/').then(response=>{
-      /**** use this for stoppages data chart ******
-      let arr = [];
-      response.data.tasks.map(i=>i.stoppage_times.map(j=>{
-          let temp = [];
-          temp = j.split(":");
-          arr.push(parseInt(temp[0]) + (temp[1]/60))
-        })); 
-      *****/
       const map = new Map();
       const lengthMap = new Map();
       const polarMap = new Map();
@@ -80,20 +72,21 @@ export default function Insights(){
         // for the total number of stoppages chart. Adds the total number of stoppages in a day. Key => date_created, value=> number of stoppages
         if(map.has(response.data.tasks[i].date_created)){
           map.set(response.data.tasks[i].date_created, map.get(response.data.tasks[i].date_created) + response.data.tasks[i].stoppages);
-          
         }
         else{
           map.set(response.data.tasks[i].date_created, response.data.tasks[i].stoppages);
         }
-        // for the length of tasks. 
+        // find the the length of tasks from the string value 
         let temp = response.data.tasks[i].total_time+"";
         temp = temp.split(" ");
         let time = 0;
+        // convert string to float in hours
         if(temp[1] === "hours" || temp[1] === "hour")
           time = parseFloat(temp[0]) + (parseFloat(temp[2])/60);
         else if( temp[1] === "minutes")
          time = (parseFloat(temp[0])/60) + (parseFloat(temp[2])/3600);
-         
+        
+        // if the map already has the key update it with the old value + the new value, if not set a new key, value
         if(lengthMap.has(response.data.tasks[i].date_created)){
           lengthMap.set(response.data.tasks[i].date_created, lengthMap.get(response.data.tasks[i].date_created) + time);
         }
@@ -106,7 +99,7 @@ export default function Insights(){
           let temp  = j.split(":");
           sessionTime = parseFloat(temp[0]) + (parseFloat(temp[1])/60) + (parseFloat(temp[2])/3600);
           //console.log("sess time", sessionTime)
-          
+          // if the map already contains the key then update it. Add the old value with the new value
           if(boxplotMap.has(response.data.tasks[i].task_name)){
             let arr = [];
             Array.from(boxplotMap.get(response.data.tasks[i].task_name)).map(e => arr.push(e));
@@ -118,13 +111,14 @@ export default function Insights(){
           }
         });
         
-        // chart 3 length of session times
+        // polar chart showing the length of breaks
         let arr = [];
         if(response.data.tasks[i].task_name === "break")
           response.data.tasks[i].stoppage_times.map((i, index) => {
             let temp  = i.split(":");
             let sessionTime = 0;
             sessionTime = parseFloat(temp[0]) + (parseFloat(temp[1])/60) + (parseFloat(temp[2])/3600);
+            // index is related to the number of breaks taken. ie index 0 is the first break, index 1 is the second break
             if(polarMap.has(index+1)){
               arr = Array.from(polarMap.get(index+1));
               console.log("arr", arr);
@@ -229,7 +223,7 @@ export default function Insights(){
   >
     <Box display="inline" style={{position:"relative"}}>    
       <InfoOutlinedIcon className="info-icon" fontSize="extra-small" id="line-chart"	onMouseEnter={(e)=> handleHover(e)} onMouseLeave={(e)=> mouseLeave(e)}/>
-      <div fontSize="9px" className={`info-icon-text ${infoStyle}`} >{text1}</div>
+      <Box component="div" className={`info-icon-text ${infoStyle}`} >{text1}</Box>
       <Line options={{
               responsive: true,
               plugins: {
@@ -246,7 +240,7 @@ export default function Insights(){
     </Box>
     <Box display="inline" style={{position:"relative"}}>
       <InfoOutlinedIcon className="info-icon" fontSize="extra-small" id="box-plot"	onMouseEnter={(e)=>handleHover(e)} onMouseLeave={(e)=> mouseLeave(e)}/>
-      <div fontSize="9px" className={`info-icon-text ${infoStyle}`} >{text2}</div>
+      <Box component="div" className={`info-icon-text ${infoStyle}`} >{text1}</Box>
       <Chart
           type="boxplot"
           data={boxplotchart}
@@ -267,7 +261,7 @@ export default function Insights(){
       </Box>  
     <Box display="inline" style={{position:"relative"}}>
       <InfoOutlinedIcon className="info-icon" fontSize="extra-small"	id="polar-chart" onMouseEnter={(e)=>handleHover(e)} onMouseLeave={(e)=> mouseLeave(e)}/>
-      <div fontSize="9px" className={`info-icon-text ${infoStyle}`} >{text3}</div>
+      <Box component="div" className={`info-icon-text ${infoStyle}`} >{text1}</Box>
       <PolarArea data={chart3} />
     </Box>
   </Box> 
