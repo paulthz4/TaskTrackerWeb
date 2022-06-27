@@ -67,9 +67,9 @@ export default function Insights(){
       const lengthMap = new Map();
       const polarMap = new Map();
       const boxplotMap = new Map();
-      // loops through the 'tasks' array response from the axios request to make use of the data in the charts
+      // loops through the 'tasks' array response from the axios request
        for(let i = 0; i < response.data.tasks.length; i++){
-        // for the total number of stoppages chart. Adds the total number of stoppages in a day. Key => date_created, value=> number of stoppages
+        // for the total number of stoppages graph. Adds the total number of stoppages in a day. Key => date_created, value=> number of stoppages
         if(map.has(response.data.tasks[i].date_created)){
           map.set(response.data.tasks[i].date_created, map.get(response.data.tasks[i].date_created) + response.data.tasks[i].stoppages);
         }
@@ -86,7 +86,7 @@ export default function Insights(){
         else if( temp[1] === "minutes")
          time = (parseFloat(temp[0])/60) + (parseFloat(temp[2])/3600);
         
-        // if the map already has the key update it with the old value + the new value, if not set a new key, value
+        // if the map already has the key, update it with the old value + the new value, if not set a new key and value
         if(lengthMap.has(response.data.tasks[i].date_created)){
           lengthMap.set(response.data.tasks[i].date_created, lengthMap.get(response.data.tasks[i].date_created) + time);
         }
@@ -133,12 +133,12 @@ export default function Insights(){
       
       setLengthData(Array.from(lengthMap.values()));
       
-      console.log("length keys", Array.from(lengthMap.keys()));
-      console.log("length values", Array.from(lengthMap.values()));
+      // console.log("length keys", Array.from(lengthMap.keys()));
+      // console.log("length values", Array.from(lengthMap.values()));
       
       
-     console.log(Array.from(polarMap.keys()));
-     console.log(Array.from(polarMap.values()));
+    //  console.log(Array.from(polarMap.keys()));
+    //  console.log(Array.from(polarMap.values()));
      
      setPolarData(Array.from(polarMap.values()));
      setPolarLabels(Array.from(polarMap.keys()));
@@ -146,8 +146,8 @@ export default function Insights(){
      setBoxPlotData(Array.from(boxplotMap.values()));
      setBoxplotLabels(Array.from(boxplotMap.keys()));
      
-     console.log("box plot values", Array.from(boxplotMap.values()));
-     console.log("box plot labels", Array.from(boxplotMap.keys()));
+    //  console.log("box plot values", Array.from(boxplotMap.values()));
+    //  console.log("box plot labels", Array.from(boxplotMap.keys()));
      
     });
 
@@ -203,7 +203,7 @@ export default function Insights(){
     },
   ],
   };
-  
+  // give id thorugh params
   const handleHover =(e)=>{
     e.preventDefault();
     setInfoStyle("normal");
