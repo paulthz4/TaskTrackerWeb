@@ -23,15 +23,15 @@ export function TodoItemsPage() {
   const [searchText, setSearchText] = useState('');
   const [options, setOptions] = useState([]);
   useEffect(()=>{
-     async function fetch(){await axios.get('http://localhost:3002/').then(response => {
+      axios.get('http://localhost:3002/').then(response => {
       setTasks(response.data.tasks);
       const array = [];
       response.data.tasks.map(i => array.includes(i.task_name) ?  array : array.push(i.task_name));
       setOptions(array);
        console.log(response);
      });
-    }
-    fetch();
+    
+    
     
     console.log(tasks);
   },[]);
