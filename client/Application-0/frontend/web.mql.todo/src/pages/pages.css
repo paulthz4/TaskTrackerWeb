@@ -34,3 +34,7 @@
   transition: 1s;
   display: none;
 }
+
+.tracker-container{
+  gap: 2em;
+}

@@ -55,7 +55,6 @@ export function TodoItemsPage() {
         ) : null
       ) : (
         <div className="todo-items-container">
-          <TaskTracker/>
           <Typography component="p" variant="h5">
             {`You have ${tasks.length} Task${
               tasks.length === 1 ? "" : "s"
