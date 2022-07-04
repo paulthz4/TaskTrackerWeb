@@ -1,10 +1,12 @@
 import { Box,TextField, Button, TextareaAutosize, Card, CardContent, Typography } from '@mui/material';
 import React, {useState} from 'react';
 import  './App.css';
+import axios from 'axios';
 
 export default function TaskTracker(){
   // 
   const [text, setText] = useState('00:00');
+  const [task, setTask] = useState('');
   
   const timer = document.getElementById('stopwatch');
 
@@ -67,11 +69,16 @@ function timerCycle() {
     min = 0;
   }
   
+  const submit=()=>{
+  
+    axios.post(`https://localhost:3002/newTask=${task}`);
+  }
+  
   return(
     <Card className="task-tracker" p="1em">
       <CardContent sx={{display: "flex", flexDirection:"column", gap:'1em', alignItems:"center"}}>
         <Box sx={{display:"flex",gap:"1em", margin:"auto",alignItems:"center", justifyContent:"space-around"}}>
-          <TextField size="small" placeholder="New Task"/><Button  size="small" variant="outlined">New Task</Button>
+          <TextField size="small" onChange={(e)=>setTask(e.target.value)} placeholder="New Task"/><Button onClick={()=>submit} size="small" variant="outlined">New Task</Button>
         </Box>
         <Typography variant='h4' sx={{p:2}}>{text}</Typography>
         <Box sx={{display:"flex", gap:"1em", }}>
