@@ -10,7 +10,7 @@ export default function Tracker(){
       animate={{opacity:1, transition:{duration:0.6}}}
       exit={{opacity: 0, transition:{duration:0.2}}}
     >
-      <Typography variant="h2" component="h2">Tracker page</Typography>
+      <Typography variant="h2" component="h2">Task Tracker</Typography>
       <TaskTracker/>
     </Box>
   );
