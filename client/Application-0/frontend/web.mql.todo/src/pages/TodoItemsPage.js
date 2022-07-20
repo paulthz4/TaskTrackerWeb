@@ -46,7 +46,7 @@ export function TodoItemsPage() {
   return (
     <Container component={motion.div} className="main-container"
       initial={{opacity:0}}
-      animate={{opacity:1, transition:{duration:1.3}}}
+      animate={{opacity:1, transition:{duration:0.6}}}
       exit={{opacity:0, transition:{duration:0.2}}} 
       maxWidth="sm">
       {loading ? (

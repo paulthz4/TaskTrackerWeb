@@ -218,7 +218,7 @@ export default function Insights(){
   <Box component={motion.div} sx={{width:"60%"}}
     className="chart-container"
     initial={{opacity:0}}
-    animate={{opacity:1, transition:{duration:1}}}
+    animate={{opacity:1, transition:{duration:0.6}}}
     exit={{opacity:0, transition:{duration:0.2}}}
   >
     <Box display="inline" style={{position:"relative"}}>    
