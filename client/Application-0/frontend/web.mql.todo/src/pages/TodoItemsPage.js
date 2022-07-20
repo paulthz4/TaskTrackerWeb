@@ -8,6 +8,7 @@ import { useDraftTodos } from "../hooks/useDraftTodos";
 import { DraftTodoItem } from "../components/DraftTodoItem";
 import { useShowLoader } from "../hooks/util-hooks";
 import TaskItem from "../components/TaskItem";
+import TaskTracker from "../components/TaskTracker";
 import axios from "axios";
 import { Autocomplete, TextField } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
@@ -22,15 +23,15 @@ export function TodoItemsPage() {
   const [searchText, setSearchText] = useState('');
   const [options, setOptions] = useState([]);
   useEffect(()=>{
-     async function fetch(){await axios.get('http://localhost:3002/').then(response => {
+      axios.get('http://localhost:3002/').then(response => {
       setTasks(response.data.tasks);
       const array = [];
       response.data.tasks.map(i => array.includes(i.task_name) ?  array : array.push(i.task_name));
       setOptions(array);
        console.log(response);
      });
-    }
-    fetch();
+    
+    
     
     console.log(tasks);
   },[]);
