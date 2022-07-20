@@ -259,7 +259,7 @@ export default function Insights(){
           }}
         />
       </Box>  
-    <Box display="inline" style={{position:"relative"}}>
+    <Box display="inline" style={{position:"relative"}} sx={{width: "60%", height:"auto"}}>
       <InfoOutlinedIcon className="info-icon" fontSize="extra-small"	id="polar-chart" onMouseEnter={(e)=>handleHover(e)} onMouseLeave={(e)=> mouseLeave(e)}/>
       <Box component="div" className={`info-icon-text ${infoStyle}`} >{text1}</Box>
       <PolarArea data={chart3} />
