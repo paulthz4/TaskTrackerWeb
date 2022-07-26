@@ -215,17 +215,18 @@ export default function Insights(){
   }
   
   return (
-  <Box component={motion.div} sx={{width:"60%"}}
+  <Box component={motion.div} 
     className="chart-container"
     initial={{opacity:0}}
     animate={{opacity:1, transition:{duration:0.6}}}
     exit={{opacity:0, transition:{duration:0.2}}}
   >
-    <Box display="inline" style={{position:"relative"}}>    
+    <Box display="inline" sx={{width: "80%", position: "relative"}}>    
       <InfoOutlinedIcon className="info-icon" fontSize="extra-small" id="line-chart"	onMouseEnter={(e)=> handleHover(e)} onMouseLeave={(e)=> mouseLeave(e)}/>
       <Box component="div" className={`info-icon-text ${infoStyle}`} >{text1}</Box>
       <Line options={{
               responsive: true,
+              width: "700px",
               plugins: {
                 legend: {
                   position: 'right',
@@ -238,7 +239,7 @@ export default function Insights(){
             }}
       data={stoppageChart} className="chart"/>
     </Box>
-    <Box display="inline" style={{position:"relative"}}>
+    <Box display="inline" sx={{width: "80%", position: "relative"}}>
       <InfoOutlinedIcon className="info-icon" fontSize="extra-small" id="box-plot"	onMouseEnter={(e)=>handleHover(e)} onMouseLeave={(e)=> mouseLeave(e)}/>
       <Box component="div" className={`info-icon-text ${infoStyle}`} >{text1}</Box>
       <Chart
@@ -259,7 +260,7 @@ export default function Insights(){
           }}
         />
       </Box>  
-    <Box display="inline" style={{position:"relative"}} sx={{width: "60%", height:"auto"}}>
+    <Box display="inline" sx={{width: "50%", position: "relative"}}>
       <InfoOutlinedIcon className="info-icon" fontSize="extra-small"	id="polar-chart" onMouseEnter={(e)=>handleHover(e)} onMouseLeave={(e)=> mouseLeave(e)}/>
       <Box component="div" className={`info-icon-text ${infoStyle}`} >{text1}</Box>
       <PolarArea data={chart3} />
