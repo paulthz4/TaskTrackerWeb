@@ -61,6 +61,9 @@ export default function Insights(){
   const [infoText, setInfoText] = useState("");
   const [infoStyle, setInfoStyle] = useState("none");
   
+  const [isHover1, setHover1] = useState(false);
+  const [isHover2, setHover2] = useState(false);
+  const [isHover3, setHover3] = useState(false);
   useEffect(()=>{
      axios.get('http://localhost:3002/').then(response=>{
       const map = new Map();
@@ -203,15 +206,20 @@ export default function Insights(){
     },
   ],
   };
-  // give id thorugh params
-  const handleHover =(e)=>{
-    e.preventDefault();
-    setInfoStyle("normal");
+  
+  const mouseHover=(e)=>{
+    if(e.target.id === "line-chart")
+      setHover1(true);
+    else if(e.target.id === "box-plot")
+      setHover2(true);
+    else if(e.target.id === "polar-chart")
+     setHover3(true);
   }
   
-  const mouseLeave = (e)=>{
-    e.preventDefault();
-    setInfoStyle("none");
+  const mouseLeave=(e)=>{
+    setHover1(false);
+    setHover2(false);
+    setHover3(false);
   }
   
   return (
@@ -222,8 +230,9 @@ export default function Insights(){
     exit={{opacity:0, transition:{duration:0.2}}}
   >
     <Box display="inline" sx={{width: "80%", position: "relative"}}>    
-      <InfoOutlinedIcon className="info-icon" fontSize="extra-small" id="line-chart"	onMouseEnter={(e)=> handleHover(e)} onMouseLeave={(e)=> mouseLeave(e)}/>
-      <Box component="div" className={`info-icon-text ${infoStyle}`} >{text1}</Box>
+      <InfoOutlinedIcon className="info-icon" fontSize="extra-small" id="line-chart"	onMouseEnter={(e)=> mouseHover(e)} onMouseLeave={(e)=> mouseLeave(e)}/>
+      {isHover1 && <Box component="div" className={"info-icon-text"} >{text1}</Box>}
+      
       <Line options={{
               responsive: true,
               width: "700px",
@@ -240,8 +249,8 @@ export default function Insights(){
       data={stoppageChart} className="chart"/>
     </Box>
     <Box display="inline" sx={{width: "80%", position: "relative"}}>
-      <InfoOutlinedIcon className="info-icon" fontSize="extra-small" id="box-plot"	onMouseEnter={(e)=>handleHover(e)} onMouseLeave={(e)=> mouseLeave(e)}/>
-      <Box component="div" className={`info-icon-text ${infoStyle}`} >{text1}</Box>
+      <InfoOutlinedIcon className="info-icon" fontSize="extra-small" id="box-plot"	onMouseEnter={(e)=>mouseHover(e)} onMouseLeave={(e)=> mouseLeave(e)}/>
+      {isHover2 && <Box component="div" className={`info-icon-text`} >{text1}</Box>}
       <Chart
           type="boxplot"
           data={boxplotchart}
@@ -261,8 +270,8 @@ export default function Insights(){
         />
       </Box>  
     <Box display="inline" sx={{width: "50%", position: "relative"}}>
-      <InfoOutlinedIcon className="info-icon" fontSize="extra-small"	id="polar-chart" onMouseEnter={(e)=>handleHover(e)} onMouseLeave={(e)=> mouseLeave(e)}/>
-      <Box component="div" className={`info-icon-text ${infoStyle}`} >{text1}</Box>
+      <InfoOutlinedIcon className="info-icon" fontSize="extra-small"	id="polar-chart" onMouseEnter={(e)=>mouseHover(e)} onMouseLeave={(e)=> mouseLeave(e)}/>
+      {isHover3 && <Box component="div" className={`info-icon-text`} >{text1}</Box>}
       <PolarArea data={chart3} />
     </Box>
   </Box> 
