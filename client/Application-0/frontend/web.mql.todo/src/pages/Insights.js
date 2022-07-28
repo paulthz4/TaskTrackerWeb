@@ -38,7 +38,7 @@ export const options1 = {
 
 export const timeLabels = ['9:00', '10:00', '11:00', '12:00', '1:00', '2:00', '3:00', '4:00', '5:00', '6:00', '7:00'];
 
-export const text1 = "This chart shows the total lengnth of time you've been working each day";
+export const text1 = "This chart shows the total length of time you've been working each day";
 
 export const text2 = "This chart shows the length each productivity session and the median, shortest, and longest.";
 

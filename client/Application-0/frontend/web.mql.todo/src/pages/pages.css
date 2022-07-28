@@ -18,12 +18,12 @@
   position: absolute;
   right:-12%;
   top:22px;
-  max-width: 20%;
+  max-width: 200px;
   font-size: 14px;
-  color: white;
-  padding: 1%;
-  background-color: rgb(197, 197, 197);
-  border-radius: 3%;
+  color: grey;
+  padding: 2em;
+  background-color: rgb(231,235,240);
+  border-radius: 5%;
 }
 
 .normal{
