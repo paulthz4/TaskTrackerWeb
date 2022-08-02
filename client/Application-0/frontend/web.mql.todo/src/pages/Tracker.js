@@ -3,6 +3,7 @@ import {React}  from 'react';
 import TaskTracker from '../components/TaskTracker';
 import './pages.css';
 import {motion} from 'framer-motion/dist/framer-motion';
+import Stopwatch from '../components/Stopwatch';
 export default function Tracker(){
   return (
     <Box className="tracker-container" component={motion.div} sx={{display: "flex", flexDirection:"column", width: "100%", margin:"5% auto", alignItems:"center", justifyContent:"center"}}
@@ -11,7 +12,8 @@ export default function Tracker(){
       exit={{opacity: 0, transition:{duration:0.2}}}
     >
       <Typography variant="h2" component="h2">Task Tracker</Typography>
-      <TaskTracker/>
+      {/* <TaskTracker/> */}
+      <Stopwatch/>
     </Box>
   );
 }

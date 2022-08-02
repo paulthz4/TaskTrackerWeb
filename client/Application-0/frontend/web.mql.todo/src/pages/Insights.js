@@ -229,13 +229,12 @@ export default function Insights(){
     animate={{opacity:1, transition:{duration:0.6}}}
     exit={{opacity:0, transition:{duration:0.2}}}
   >
-    <Box display="inline" sx={{width: "80%", position: "relative"}}>    
+    <Box display="inline" sx={{width: "80%", position: "relative", maxWidth: "90%"}}>    
       <InfoOutlinedIcon className="info-icon" fontSize="extra-small" id="line-chart"	onMouseEnter={(e)=> mouseHover(e)} onMouseLeave={(e)=> mouseLeave(e)}/>
       {isHover1 && <Box component="div" className={"info-icon-text"} >{text1}</Box>}
       
       <Line options={{
               responsive: true,
-              width: "700px",
               plugins: {
                 legend: {
                   position: 'right',
@@ -248,7 +247,7 @@ export default function Insights(){
             }}
       data={stoppageChart} className="chart"/>
     </Box>
-    <Box display="inline" sx={{width: "80%", position: "relative"}}>
+    <Box display="inline" sx={{width: "80%", position: "relative", maxWidth: "80%", overflow: "auto"}}>
       <InfoOutlinedIcon className="info-icon" fontSize="extra-small" id="box-plot"	onMouseEnter={(e)=>mouseHover(e)} onMouseLeave={(e)=> mouseLeave(e)}/>
       {isHover2 && <Box component="div" className={`info-icon-text`} >{text1}</Box>}
       <Chart
