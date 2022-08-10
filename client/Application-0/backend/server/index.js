@@ -27,28 +27,26 @@ app.get('/', async (req,res)=>{
     res.status(200).json({"tasks": result});
     return;
   });
+});
+app.get('/tasks', async (req,res)=>{
+  let direction;
+  if(!req.query.direction || req.query.direction === 'desc')
+    direction = -1;
+  if(req.query.direction ==='asc')
+    direction = 1;
   
-  app.get('/tasks', async (req,res)=>{
-    let direction;
-    if(!req.query.direction || req.query.direction === 'desc')
-      direction = -1;
-    if(req.query.direction ==='asc')
-      direction = 1;
-    
-    let cursor;
-    if(req.query.taskName){
-      cursor = collection.find({"task_name": req.query.taskName}).sort({"date_created": direction, "time_created": 1});
-      res.status(200).json({"tasks": await cursor.toArray()});
+  let cursor;
+  if(req.query.taskName){
+    cursor = collection.find({"task_name": req.query.taskName}).sort({"date_created": direction, "time_created": 1});
+    res.status(200).json({"tasks": await cursor.toArray()});
+    return;
+  }  
+  
+  if(!req.query.taskName)
+    collection.find({}).sort({"date_created": direction, "time_created": 1}).toArray((err,result)=>{
+      console.log('own sorting')
+      res.status(200).json({"tasks": result});
       return;
-    }  
-    
-    if(!req.query.taskName)
-      collection.find({}).sort({"date_created": direction, "time_created": 1}).toArray((err,result)=>{
-        console.log('own sorting')
-        res.status(200).json({"tasks": result});
-        return;
-      });
-  });
- 
+    });
 });
 module.exports = app;
