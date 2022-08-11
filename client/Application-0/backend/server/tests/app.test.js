@@ -40,6 +40,14 @@ describe("Test example", ()=>{
      });
   });
   
+  test("GET tasks asc",(done)=>{
+    const res = await request(app)
+    .get("/tasks?direction=as")
+    .expect(400)
+    .expect("Content-Type", /json/);
+    
+  });
+  
   test("GET tasks?",(done)=>{
     request(app)
     .get("/tasks?taskName=break")
