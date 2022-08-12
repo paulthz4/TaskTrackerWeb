@@ -41,11 +41,30 @@ describe("Test example", ()=>{
   });
   
   test("GET tasks asc",(done)=>{
-    const res = await request(app)
+    request(app)
     .get("/tasks?direction=as")
     .expect(400)
     .expect("Content-Type", /json/);
     
+  });
+  
+  test("GET task 'break' ",()=>{
+    const res = await request(app)
+      .get("/tasks?taskname=break")
+      .expect(400)
+      .expect("Content-Type", /json/);
+      expect(res.body.tasks[0]).toEqual({
+         "_id": "62e98483e7040577e3447d3d",
+         "task_name": "break",
+         "date_created": "2022 08 02 Tue. Aug.",
+         "time_created": "14:09:39",
+         "total_time": "22 minutes 50 seconds",
+         "stoppages": 1,
+         "stoppage_times": [
+          "00:22:50"
+         ]
+        });
+      
   });
   
   test("GET tasks?",(done)=>{
