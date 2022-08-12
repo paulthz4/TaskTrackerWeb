@@ -51,7 +51,7 @@ describe("Test example", ()=>{
   test("GET task 'break' ",()=>{
     const res = await request(app)
       .get("/tasks?taskname=break")
-      .expect(400)
+      .expect(200)
       .expect("Content-Type", /json/);
       expect(res.body.tasks[0]).toEqual({
          "_id": "62e98483e7040577e3447d3d",
@@ -64,7 +64,27 @@ describe("Test example", ()=>{
           "00:22:50"
          ]
         });
-      
+  });
+  
+  test("GET test task name fetch asc order",()=>{
+    const res = await request(app)
+      .get('/tasks?taskname=break&direction=asc')
+      expect(200)
+      .expect("Content-Type", /json/);
+    
+    expect(res.body.tasks[0]).toEqual({
+      "_id": "62aa42f3953c867b525c4367",
+      "task_name": "break",
+      "date_created": "2022 06 15 Wed. Jun.",
+      "time_created": "14:37:07",
+      "total_time": "1 hour 24 minutes",
+      "stoppages": 1,
+      "stoppage_times": [
+       "00:26:41",
+       "00:27:03",
+       "00:21:15"
+      ]
+     });
   });
   
   test("GET tasks?",(done)=>{
