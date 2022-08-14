@@ -10,18 +10,28 @@ import { useShowLoader } from "../hooks/util-hooks";
 import TaskItem from "../components/TaskItem";
 import TaskTracker from "../components/TaskTracker";
 import axios from "axios";
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, TextField, Stack, Pagination } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import {motion} from 'framer-motion/dist/framer-motion';
+import usePagination from "../hooks/usePagination";
 
 export function TodoItemsPage() {
   const { loading, todos, ...todoActions } = useTodos();
-  // const { tasks }  = useTasks();
   const { draftTodos, ...draftTodoActions } = useDraftTodos();
   const showLoader = useShowLoader(loading, 200);
   const [tasks, setTasks] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [options, setOptions] = useState([]);
+  const [page, setPage] = useState(1);
+  
+  const count = Math.ceil(tasks.length / 15 );
+  const DATA = usePagination(tasks, 21);
+  
+  const handleChange=(e,p)=>{
+    setPage(p);
+    DATA.jump(p);
+  }
+  
   useEffect(()=>{
       axios.get('http://localhost:3002/').then(response => {
       setTasks(response.data.tasks);
@@ -89,20 +99,28 @@ export function TodoItemsPage() {
                 draftTodoActions={draftTodoActions}
               />
             ))}
+          <Stack>
+            <Pagination 
+              count={count} 
+              size="medium"
+              page={page}
+              onChange={handleChange}
+            />
+          </Stack>  
           <List style={{ width: "100%" }} dense={true}>
             {
-              tasks.map((task) =>(
+              DATA.currentData().map((task) =>(
               <TaskItem key={task._id} task={task} />
               ))
             }
             <br/><Divider/><br/><br/>
-            {todos.map((todo) => (
+            {/* {todos.map((todo) => (
               <TodoItem
                 key={String(todo._id)}
                 todo={todo}
                 todoActions={todoActions}
               />
-            ))}
+            ))} */}
             
           </List>
         </div>
