@@ -68,7 +68,7 @@ describe("Test example", ()=>{
   
   test("GET test task name fetch asc order",()=>{
     const res = await request(app)
-      .get('/tasks?taskname=break&direction=asc')
+      .get('/tasks?taskName=break&direction=asc')
       expect(200)
       .expect("Content-Type", /json/);
     
