@@ -24,7 +24,7 @@ export function TodoItemsPage() {
   const [options, setOptions] = useState([]);
   const [page, setPage] = useState(1);
   
-  const [itemsPerPage, setItemsPerPage] = useState(12);
+  const [itemsPerPage, setItemsPerPage] = useState(8);
   const count = Math.ceil(tasks.length / itemsPerPage );
   const DATA = usePagination(tasks, itemsPerPage);
   
@@ -39,12 +39,9 @@ export function TodoItemsPage() {
       const array = [];
       response.data.tasks.map(i => array.includes(i.task_name) ?  array : array.push(i.task_name));
       setOptions(array);
-       console.log(response);
-     });
-    
-    
-    
-    console.log(tasks);
+       console.log(response,"options text");
+     });    
+    //console.log(tasks, "tasks");
   },[]);
   
   
@@ -108,16 +105,16 @@ export function TodoItemsPage() {
               onChange={handleChange}
             />
           </Stack>  
-          <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-            <InputLabel>Items per Page</InputLabel>
+          <FormControl sx={{ m: 1, width: "20%" }} size="small">
+            <InputLabel>Tasks per Page</InputLabel>
             <Select 
               value={itemsPerPage}
               label="itemsPerPage"
               onChange={(e)=>{setItemsPerPage(e.target.value)}}
             >
-            <MenuItem value={15}>15</MenuItem>
-            <MenuItem value={20}>20</MenuItem>
-            <MenuItem value={25}>25</MenuItem>
+            <MenuItem value={Math.ceil(tasks.length/5)}>{Math.ceil(tasks.length/5)}</MenuItem>
+            <MenuItem value={Math.ceil(tasks.length/4)}>{Math.ceil(tasks.length/4)}</MenuItem>
+            <MenuItem value={Math.ceil(tasks.length/3)}>{Math.ceil(tasks.length/3)}</MenuItem>
             </Select>
           </FormControl>
           <List style={{ width: "100%" }} dense={true}>
