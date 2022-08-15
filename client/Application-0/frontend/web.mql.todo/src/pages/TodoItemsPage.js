@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {  Container,Button,Typography,List,LinearProgress,Divider, Box,} from "@material-ui/core";
+import {  Container,Button,Typography,List,LinearProgress,Divider, Box, Input, Menu,} from "@material-ui/core";
 import '../components/App.css';
 import AddIcon from "@material-ui/icons/Add";
 import { useTodos } from "../hooks/useTodos";
@@ -10,7 +10,7 @@ import { useShowLoader } from "../hooks/util-hooks";
 import TaskItem from "../components/TaskItem";
 import TaskTracker from "../components/TaskTracker";
 import axios from "axios";
-import { Autocomplete, TextField, Stack, Pagination } from "@mui/material";
+import { Autocomplete, TextField, Stack, Pagination, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import {motion} from 'framer-motion/dist/framer-motion';
 import usePagination from "../hooks/usePagination";
@@ -24,8 +24,9 @@ export function TodoItemsPage() {
   const [options, setOptions] = useState([]);
   const [page, setPage] = useState(1);
   
-  const count = Math.ceil(tasks.length / 15 );
-  const DATA = usePagination(tasks, 21);
+  const [itemsPerPage, setItemsPerPage] = useState(12);
+  const count = Math.ceil(tasks.length / itemsPerPage );
+  const DATA = usePagination(tasks, itemsPerPage);
   
   const handleChange=(e,p)=>{
     setPage(p);
@@ -107,6 +108,18 @@ export function TodoItemsPage() {
               onChange={handleChange}
             />
           </Stack>  
+          <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+            <InputLabel>Items per Page</InputLabel>
+            <Select 
+              value={itemsPerPage}
+              label="itemsPerPage"
+              onChange={(e)=>{setItemsPerPage(e.target.value)}}
+            >
+            <MenuItem value={15}>15</MenuItem>
+            <MenuItem value={20}>20</MenuItem>
+            <MenuItem value={25}>25</MenuItem>
+            </Select>
+          </FormControl>
           <List style={{ width: "100%" }} dense={true}>
             {
               DATA.currentData().map((task) =>(
