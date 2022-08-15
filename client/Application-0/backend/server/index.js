@@ -1,13 +1,12 @@
 const express  = require('express');
 const app = express();
 const cors  = require('cors');
-
 const {MongoClient} = require('mongodb');
 
 app.set('json spaces', 1);
 app.use(cors());
 
-const uri = "mongodb+srv://newUser2:superSafe2@cluster0.uo7qm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = process.env.URI;
 
 let collection;
 // connecting to mongodb using MongoClient.connect static method
