@@ -15,8 +15,9 @@ MongoClient.connect(uri, (err, database) => {
   if (err) 
     return console.log(err)
   collection = database.db('all_tasks').collection("tasks")
-  app.listen( 3002, () => {
-  console.log('listening on 3002')
+  const PORT = 3002;
+  app.listen(process.env.PORT || PORT, () => {
+  console.log(`listening on ${PORT}`)
   });
 });
 
