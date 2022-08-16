@@ -6,6 +6,7 @@ import {motion} from 'framer-motion/dist/framer-motion';
 import axios from 'axios';
 import { Box, Typography } from '@material-ui/core';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import SettingsIcon from '@mui/icons-material/Settings';
 import './pages.css';
 ChartJS.register(
   RadialLinearScale, 

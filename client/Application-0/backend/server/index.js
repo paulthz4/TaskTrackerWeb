@@ -6,12 +6,12 @@ const {MongoClient} = require('mongodb');
 app.set('json spaces', 1);
 app.use(cors());
 
-const uri = process.env.URI;
-// const URI = "mongodb+srv://newUser2:superSafe2@cluster0.uo7qm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+// const URI = process.env.URI;
+const URI = "mongodb+srv://newUser2:superSafe2@cluster0.uo7qm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
 let collection;
 // connecting to mongodb using MongoClient.connect static method
-MongoClient.connect(uri, (err, database) => {
+MongoClient.connect(URI, (err, database) => {
   if (err) 
     return console.log(err)
   collection = database.db('all_tasks').collection("tasks")
