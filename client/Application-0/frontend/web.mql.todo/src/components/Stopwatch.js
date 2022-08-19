@@ -2,7 +2,7 @@ import {React, useState, useEffect}  from 'react';
 import {motion} from 'framer-motion/dist/framer-motion';
 import { Box,TextField, Button, TextareaAutosize, Card, CardContent, Typography } from '@mui/material';
 
-export default function Stopwatch(){
+export default function Stopwatch({task}){
   const [time, setTime] = useState(0);
   const [running, setRunning] = useState(false);
   useEffect(() => {
@@ -18,7 +18,10 @@ export default function Stopwatch(){
   }, [running]);
   
   return (
-    <Card className="task-tracker" p="1em"> 
+    <Card sx={{display: "flex", flexDirection:"column", gap:'1em', alignItems:"center"}} p="1em"> 
+      <Box component="span" p={2}>
+        Current Task: {task}
+      </Box>
       <CardContent sx={{display: "flex", flexDirection:"row", gap:'1em', alignItems:"center", justifyContent: "center"}}>
         <span>{("0" + Math.floor((time/ 3600000) % 60)).slice(-2)}</span>
         <span>{("0" + Math.floor((time / 60000) % 60)).slice(-2)} :</span>

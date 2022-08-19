@@ -14,10 +14,10 @@ export default function Settings(){
       sx={{display: "flex", flexDirection:"column", width: "100%", margin:"5% auto", alignItems:"center", justifyContent:"center"}}
     >
       <Card elevation={0} sx={{padding: "3em", width:"80%", backgroundColor: '#e6f7ff'}} className="tracker-container">
-        <Typography variant="h3" p={3}>Settings</Typography>
+        
         <TableContainer elevation={0} component={Card} sx={{width:"50%"}}>
           <Table >
-            <TableHead></TableHead>
+            <TableHead><Typography variant="h3" p={3}>Settings</Typography></TableHead>
             <TableBody>
               <TableRow>
                 <TableCell >Dark Mode</TableCell>
