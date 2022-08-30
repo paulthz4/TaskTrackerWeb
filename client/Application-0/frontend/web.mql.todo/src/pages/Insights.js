@@ -248,7 +248,7 @@ export default function Insights(){
             }}
       data={stoppageChart} className="chart"/>
     </Box>
-    <Box display="inline" sx={{width: "80%", position: "relative", maxWidth: "80%", overflow: "auto"}}>
+    <Box display="inline" sx={{width: "80%", position: "relative", maxWidth: "80%"}}>
       <InfoOutlinedIcon className="info-icon" fontSize="extra-small" id="box-plot"	onMouseEnter={(e)=>mouseHover(e)} onMouseLeave={(e)=> mouseLeave(e)}/>
       {isHover2 && <Box component="div" className={`info-icon-text`} >{text1}</Box>}
       <Chart
